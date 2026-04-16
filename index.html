@@ -413,7 +413,7 @@ body{font-family:var(--font-body);background:var(--gray-50);color:var(--black);m
 // ═══════════════════════════════════════
 // CONFIGURACIÓN — CAMBIA ESTE NÚMERO
 // ═══════════════════════════════════════
-const WHATSAPP_NUMBER = '573000000000'; // ← Pon aquí tu número con código de país (sin + ni espacios)
+const WHATSAPP_NUMBER = '573173546999'; // ← Pon aquí tu número con código de país (sin + ni espacios)
 const STORE_NAME = 'Apple Store';
 
 // ═══════════════════════════════════════
@@ -439,6 +439,31 @@ function getEmoji(name) {
   const u = name.toUpperCase();
   for (const k in EMOJI_MAP) if (u.includes(k)) return EMOJI_MAP[k];
   return '📦';
+}
+
+// ═══════════════════════════════════════
+// FOTOS
+// ═══════════════════════════════════════
+// Pega aquí el ID de tu carpeta raíz de AppSheet en Google Drive.
+// Ábrela en Drive → copia el ID de la URL (la parte después de /folders/)
+const APPSHEET_FOLDER_ID = '1cOGkTHk2gino1CwIWMdenyXdDxVKkJd7';
+
+function buildFotoUrl(raw) {
+  if (!raw) return '';
+  if (raw.startsWith('http://') || raw.startsWith('https://')) return raw;
+  return ''; // ruta relativa AppSheet: sin folder ID no podemos resolverla
+}
+
+function buildCardImg(p, isModal) {
+  var size = isModal ? '80px' : '64px';
+  var emoji = p.emoji || '&#128241;';
+  if (!p.foto) {
+    return '<span style="font-size:' + size + ';">' + emoji + '</span>';
+  }
+  return '<img src="' + p.foto.replace(/"/g, '&quot;') + '" alt="" '
+    + 'style="width:100%;height:100%;object-fit:cover;" '
+    + 'onerror="this.style.display='none';var f=this.parentNode.querySelector('.efb');if(f)f.style.display='flex';">'
+    + '<span class="efb" style="display:none;font-size:' + size + ';width:100%;height:100%;align-items:center;justify-content:center;">' + emoji + '</span>';
 }
 
 function getCategory(name) {
@@ -548,7 +573,8 @@ async function loadFromURL(url) {
     const iGrado = gi('GRADO');
     const iBta = gi('BATERIA');
     const iRef = gi('REFERENCIA', 'REF');
-    const iSim = gi('SIM');
+    const iSim  = gi('SIM');
+    const iFoto = gi('FOTO_PRINCIPAL', 'FOTO PRINCIPAL', 'FOTO');
 
     if (iProd < 0 || iPrecio < 0) throw new Error('No se encontraron columnas PRODUCTO y PRECIO. Verifica el formato de tu hoja.');
 
@@ -566,8 +592,30 @@ async function loadFromURL(url) {
         const btaRaw  = s(r, iBta);
         const bta     = btaRaw ? parseFloat(btaRaw) || 0 : 0;
         const precioRaw = s(r, iPrecio);
-        const precio  = parseFloat(precioRaw.replace(/[^0-9.]/g, '')) || 0;
-        return { id: i, nombre, color, precio, estado, grado, bta, ref, sim,
+        const precio  = (() => {
+          // Quita todo excepto dígitos y puntos/comas, luego normaliza decimal
+          let raw = precioRaw.replace(/[^0-9.,]/g, '');
+          // Si hay coma como decimal (ej: "1.850.000,00") → quitar puntos, reemplazar coma por punto
+          if (raw.includes(',')) {
+            raw = raw.replace(/\./g, '').replace(',', '.');
+          } else {
+            // Puntos como separadores de miles: si hay más de un punto, quitar todos
+            const dots = (raw.match(/\./g) || []).length;
+            if (dots > 1) raw = raw.replace(/\./g, '');
+            // Si hay exactamente un punto y el número después es 1-2 dígitos → decimal
+            // Si hay exactamente un punto y el número tiene exactamente el patrón X.000 → miles
+            else if (dots === 1) {
+              const parts = raw.split('.');
+              if (parts[1] && parts[1].length === 3 && parts[0].length >= 1) {
+                raw = raw.replace('.', ''); // es separador de miles
+              }
+            }
+          }
+          return parseFloat(raw) || 0;
+        })();
+        const fotoRaw = s(r, iFoto);
+        const foto = buildFotoUrl(fotoRaw);
+        return { id: i, nombre, color, precio, estado, grado, bta, ref, sim, foto,
           cat: getCategory(nombre), emoji: getEmoji(nombre) };
       });
 
@@ -649,7 +697,7 @@ function renderGrid() {
     const btaLabel = p.bta > 0 ? `${Math.round(p.bta * 100)}% batería` : '';
     return `
     <div class="card" onclick="openProductModal(${p.id})">
-      <div class="card-img">${p.emoji}</div>
+      <div class="card-img" style="position:relative;overflow:hidden;">${buildCardImg(p)}</div>
       <div class="card-body">
         <div class="card-cat">${p.cat}</div>
         <div class="card-name">${p.nombre}</div>
@@ -674,7 +722,7 @@ function openProductModal(id) {
   const p = allProducts.find(x => x.id === id);
   if (!p) return;
   document.getElementById('modal-content-inner').innerHTML = `
-    <div class="modal-img">${p.emoji}</div>
+    <div class="modal-img" style="overflow:hidden;">${buildCardImg(p, true)}</div>
     <div class="modal-body">
       <div class="modal-cat">${p.cat}</div>
       <div class="modal-title">${p.nombre}</div>
