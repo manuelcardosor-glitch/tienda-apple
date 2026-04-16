@@ -484,12 +484,18 @@ function parseCSV(text) {
     let cur = '', inQ = false;
     for (const c of line) {
       if (c === '"') { inQ = !inQ; }
-      else if (c === ',' && !inQ) { cols.push(cur.trim()); cur = ''; }
+      else if (c === ',' && !inQ) { cols.push((cur || '').trim()); cur = ''; }
       else cur += c;
     }
-    cols.push(cur.trim());
+    cols.push((cur || '').trim());
     return cols;
   });
+}
+
+// Helper: obtiene valor seguro de una celda
+function safe(row, idx) {
+  if (idx < 0 || idx >= row.length) return '';
+  return String(row[idx] || '').trim();
 }
 
 // ═══════════════════════════════════════
@@ -526,7 +532,7 @@ async function loadFromURL(url) {
     const rows = parseCSV(text);
     if (rows.length < 2) throw new Error('La hoja está vacía o no tiene datos.');
 
-    const headers = rows[0].map(h => h.toUpperCase().trim().replace(/\s+/g, '_'));
+    const headers = rows[0].map(h => (h != null ? String(h) : '').toUpperCase().trim().replace(/\s+/g, '_'));
     const gi = (...names) => {
       for (const n of names) {
         const i = headers.findIndex(h => h.includes(n));
@@ -546,27 +552,23 @@ async function loadFromURL(url) {
 
     if (iProd < 0 || iPrecio < 0) throw new Error('No se encontraron columnas PRODUCTO y PRECIO. Verifica el formato de tu hoja.');
 
+    const s = (row, idx) => (idx >= 0 && idx < row.length && row[idx] != null) ? String(row[idx]).trim() : '';
+
     allProducts = rows.slice(1)
-      .filter(r => r[iProd] && r[iProd].trim())
+      .filter(r => r && r.length > 0 && s(r, iProd) !== '')
       .map((r, i) => {
-        const estado = (iEstado >= 0 ? r[iEstado] : '').toUpperCase().trim();
-        const grado = (iGrado >= 0 ? r[iGrado] : '').trim();
-        const bta = iBta >= 0 ? parseFloat(r[iBta]) || 0 : 0;
-        const nombre = r[iProd].trim();
-        const precio = parseFloat((r[iPrecio] || '0').replace(/[^0-9.]/g, '')) || 0;
-        return {
-          id: i,
-          nombre,
-          color: (iColor >= 0 ? r[iColor] : '').trim(),
-          precio,
-          estado,
-          grado,
-          bta,
-          ref: (iRef >= 0 ? r[iRef] : '').trim(),
-          sim: (iSim >= 0 ? r[iSim] : '').trim(),
-          cat: getCategory(nombre),
-          emoji: getEmoji(nombre),
-        };
+        const nombre  = s(r, iProd);
+        const color   = s(r, iColor);
+        const estado  = s(r, iEstado).toUpperCase();
+        const grado   = s(r, iGrado);
+        const sim     = s(r, iSim);
+        const ref     = s(r, iRef);
+        const btaRaw  = s(r, iBta);
+        const bta     = btaRaw ? parseFloat(btaRaw) || 0 : 0;
+        const precioRaw = s(r, iPrecio);
+        const precio  = parseFloat(precioRaw.replace(/[^0-9.]/g, '')) || 0;
+        return { id: i, nombre, color, precio, estado, grado, bta, ref, sim,
+          cat: getCategory(nombre), emoji: getEmoji(nombre) };
       });
 
     renderStore();
