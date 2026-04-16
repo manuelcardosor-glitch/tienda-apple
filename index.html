@@ -369,22 +369,19 @@ function parsePrecio(raw) {
   }
   return parseFloat(s) || 0;
 }
-// Construye URL de imagen pública desde ruta relativa de AppSheet + Drive folder
+// Procesa la URL de la foto — acepta cualquier URL de Drive o HTTP directa
 function fotoUrl(raw) {
   if (!raw) return '';
   raw = String(raw).trim();
   if (!raw) return '';
-  // Si ya es URL completa, usarla directo
-  if (raw.startsWith('http://') || raw.startsWith('https://')) return raw;
-  // Ruta relativa AppSheet: INGRESO_Images/ARCHIVO.jpg
-  // Las imágenes en Drive se pueden acceder via:
-  // https://drive.google.com/uc?export=view&id=FILE_ID
-  // Pero con ruta relativa no tenemos el file ID directamente.
-  // Alternativa: servir desde el proxy de Drive usando el folder + path.
-  // Usamos la URL de exportación de Drive para búsqueda por nombre:
-  // Este método funciona si la carpeta es pública y el archivo está indexado.
-  // La forma más confiable es: thumbnail de Drive con búsqueda por nombre.
-  // Por ahora retornamos la ruta para que el owner configure un hosting si lo necesita.
+  // URL directa (https://lh3.googleusercontent.com/d/... o cualquier http)
+  if (raw.startsWith('http://') || raw.startsWith('https://')) {
+    // Si es URL de Drive tipo /file/d/ID/view o /open?id=ID → convertir a lh3 proxy
+    var m = raw.match(/\/d\/([a-zA-Z0-9_-]{10,})/);
+    if (!m) m = raw.match(/[?&]id=([a-zA-Z0-9_-]{10,})/);
+    if (m) return 'https://lh3.googleusercontent.com/d/' + m[1];
+    return raw;
+  }
   return '';
 }
 function badgeCls(g) {
@@ -491,7 +488,7 @@ function loadFromURL(url) {
       var iBta  = gi('BATERIA');
       var iRef  = gi('REFERENCIA','REF');
       var iSim  = gi('SIM');
-      var iFoto = gi('FOTO_PRINCIPAL','FOTO');
+      var iFoto = gi('URL_FOTO','URL_IMAGEN','FOTO_PRINCIPAL','FOTO_PRINC','FOTO','IMAGE','IMAGEN');
 
       if (iP < 0 || iPr < 0) throw new Error('No se encontraron columnas PRODUCTO y PRECIO.');
 
