@@ -1,0 +1,5 @@
+{
+  "functions": {
+    "api/csv.js": { "maxDuration": 10 }
+  }
+}
