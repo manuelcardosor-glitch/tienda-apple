@@ -1,5 +1,5 @@
 {
-  "functions": {
-    "api/csv.js": { "maxDuration": 10 }
-  }
+  "rewrites": [
+    { "source": "/api/csv", "destination": "/api/csv.js" }
+  ]
 }
