@@ -30,13 +30,13 @@ body{font-family:var(--fB);background:var(--g50);color:var(--black);min-height:1
   color:#fff;font-size:12px;font-weight:500;
   padding:8px 16px;text-align:center;
   display:flex;align-items:center;justify-content:center;gap:8px;
-  overflow:hidden;position:relative;
+  overflow:hidden;position:sticky;top:0;z-index:101;
 }
 .urgency-bar .ub-text{transition:opacity .4s,transform .4s;}
 .urgency-bar .ub-text.out{opacity:0;transform:translateY(-10px);}
 
 /* ── NAV ── */
-.nav{position:sticky;top:0;z-index:100;background:rgba(255,255,255,.95);backdrop-filter:blur(20px);border-bottom:1px solid var(--g200);padding:0 24px;height:58px;display:flex;align-items:center;gap:14px;}
+.nav{position:sticky;top:36px;z-index:100;background:rgba(255,255,255,.95);backdrop-filter:blur(20px);border-bottom:1px solid var(--g200);padding:0 24px;height:58px;display:flex;align-items:center;gap:14px;}
 .brand{display:flex;align-items:center;gap:7px;flex-shrink:0;text-decoration:none;cursor:pointer;user-select:none;}
 .brand-apple{width:20px;height:20px;flex-shrink:0;}
 .brand-name{font-family:var(--fD);font-size:20px;color:var(--black);}
@@ -270,6 +270,29 @@ body{font-family:var(--fB);background:var(--g50);color:var(--black);min-height:1
 #hero-file{display:none;}
 #admin-file{display:none;}
 
+/* ── FOOTER ── */
+.footer{background:var(--black);color:rgba(255,255,255,.55);padding:40px 24px 28px;}
+.footer-inner{max-width:960px;margin:0 auto;}
+.footer-top{display:grid;grid-template-columns:1fr 1fr;gap:32px;padding-bottom:28px;border-bottom:1px solid rgba(255,255,255,.08);}
+.footer-brand{display:flex;align-items:center;gap:8px;margin-bottom:10px;}
+.footer-brand svg{width:22px;height:22px;fill:#fff;flex-shrink:0;}
+.footer-brand span{font-family:var(--fD);font-size:18px;color:#fff;}
+.footer-desc{font-size:13px;line-height:1.6;color:rgba(255,255,255,.45);}
+.footer-section h4{font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.1em;color:rgba(255,255,255,.35);margin-bottom:12px;}
+.footer-contact-item{display:flex;align-items:center;gap:8px;font-size:13px;color:rgba(255,255,255,.55);margin-bottom:8px;text-decoration:none;transition:.18s;}
+.footer-contact-item:hover{color:#fff;}
+.footer-contact-item .fci{font-size:15px;width:16px;text-align:center;flex-shrink:0;}
+.footer-social{display:flex;gap:10px;margin-top:4px;}
+.soc-btn{
+  width:36px;height:36px;border-radius:50%;
+  background:rgba(255,255,255,.08);
+  display:flex;align-items:center;justify-content:center;
+  transition:.18s;text-decoration:none;
+}
+.soc-btn:hover{background:rgba(255,255,255,.18);}
+.soc-btn svg{width:16px;height:16px;fill:#fff;}
+.footer-bottom{padding-top:20px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px;font-size:11px;color:rgba(255,255,255,.25);}
+
 /* ── RESPONSIVE ── */
 @media(max-width:600px){
   .nav{padding:0 14px;gap:8px;}
@@ -277,6 +300,8 @@ body{font-family:var(--fB);background:var(--g50);color:var(--black);min-height:1
   .grid{padding:12px;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:10px;}
   .filters,.stats{padding-left:14px;padding-right:14px;}
   .add-toast{top:62px;right:12px;}
+  .footer-top{grid-template-columns:1fr;}
+  .footer{padding:32px 16px 24px;}
 }
 </style>
 </head>
@@ -292,8 +317,8 @@ body{font-family:var(--fB);background:var(--g50);color:var(--black);min-height:1
 <!-- NAV -->
 <nav class="nav">
   <a class="brand" id="brand-logo" title="MONKEYS Store">
-    <svg class="brand-apple" viewBox="0 0 814 1000" fill="currentColor">
-      <path d="M788.1 340.9c-5.8 4.5-108.2 62.2-108.2 190.5 0 148.4 130.3 200.9 134.2 202.2-.6 3.2-20.7 71.9-68.7 141.9-42.8 61.6-87.5 123.1-155.5 123.1s-85.5-39.5-164-39.5c-76 0-103.7 40.8-165.9 40.8s-105-57.8-155.5-127.4C46 405.8 29 295.2 29 187.5 29 88.6 87.3 35.3 143.8 35.3c68.7 0 112.5 45.5 157.2 45.5 42.8 0 93.9-47 162.3-47 27.6 0 164.2 2.6 245.3 115.3zm-175.8-46.8c-35.1 0-102.8-36.6-134.2-36.6-83.5 0-126.3 49.3-126.3 108.5 0 66.8 36.6 128.3 122.5 161.6 35.7 13.5 72.8 17.2 87.3 17.2 3.8 0 6.4-.6 6.4-.6"/>
+    <svg class="brand-apple" viewBox="0 0 256 256" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+      <path d="M215.9 180.7c-4.9 10.8-7.2 15.6-13.5 25.2-8.7 13.3-21.1 29.8-36.4 29.9-13.6.1-17.1-8.9-35.6-8.8-18.4.1-22.3 9-35.9 8.9-15.3-.1-27-15-35.8-28.3C36 181.3 28 145.4 28.1 110.8c0-52.5 34.1-80.3 67.8-80.8 17.9-.3 32.8 12 43.9 12 11 0 31.7-14.7 53.5-12.5 9.1.4 34.7 3.7 51.1 27.8-1.3.9-30.5 17.8-30.2 53.1.3 42.2 37 56.3 37.2 56.3-.3.8-1.6 5.6-2.2 8.5l-.3 5.5zM158.9 15.3C148.8 27.1 132.1 36 116 34.5c-2.1-16.8 6.1-34.5 17.1-45.5 11.1-11.2 29.6-19.6 44.9-20.2 1.8 17.5-5.1 35-19.1 46.5z"/>
     </svg>
     <span class="brand-name">MONKEYS<b>.</b>store</span>
   </a>
@@ -384,6 +409,32 @@ body{font-family:var(--fB);background:var(--g50);color:var(--black);min-height:1
   </div>
 </div>
 
+<!-- FOOTER -->
+<footer class="footer" id="site-footer" style="display:none">
+  <div class="footer-inner">
+    <div class="footer-top">
+      <div>
+        <div class="footer-brand">
+          <svg viewBox="0 0 256 256"><path d="M215.9 180.7c-4.9 10.8-7.2 15.6-13.5 25.2-8.7 13.3-21.1 29.8-36.4 29.9-13.6.1-17.1-8.9-35.6-8.8-18.4.1-22.3 9-35.9 8.9-15.3-.1-27-15-35.8-28.3C36 181.3 28 145.4 28.1 110.8c0-52.5 34.1-80.3 67.8-80.8 17.9-.3 32.8 12 43.9 12 11 0 31.7-14.7 53.5-12.5 9.1.4 34.7 3.7 51.1 27.8-1.3.9-30.5 17.8-30.2 53.1.3 42.2 37 56.3 37.2 56.3-.3.8-1.6 5.6-2.2 8.5l-.3 5.5zM158.9 15.3C148.8 27.1 132.1 36 116 34.5c-2.1-16.8 6.1-34.5 17.1-45.5 11.1-11.2 29.6-19.6 44.9-20.2 1.8 17.5-5.1 35-19.1 46.5z"/></svg>
+          <span id="footer-nombre"></span>
+        </div>
+        <p class="footer-desc">Equipos Apple certificados con revisión técnica completa. Garantía real en cada compra.</p>
+        <div class="footer-social" id="footer-social"></div>
+      </div>
+      <div>
+        <div class="footer-section">
+          <h4>Contacto</h4>
+          <div id="footer-contact"></div>
+        </div>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span id="footer-copy"></span>
+      <span>Powered by MONKEYS Technology</span>
+    </div>
+  </div>
+</footer>
+
 <!-- ADMIN PANEL (triple-click en el logo) -->
 <div class="admin-ov" id="admin-ov" onclick="if(event.target===this)closeAdmin()">
   <div class="admin-box">
@@ -403,13 +454,28 @@ body{font-family:var(--fB);background:var(--g50);color:var(--black);min-height:1
       <!-- Foto Hero -->
       <div class="admin-row">
         <label class="admin-lbl">Foto de fondo del Hero</label>
-        <label class="photo-zone" for="admin-file">
-          <div style="font-size:28px;">🖼️</div>
-          <p>Clic para subir imagen de portada</p>
-          <p id="hero-photo-name" style="color:var(--blue);font-size:11px;margin-top:4px;"></p>
-        </label>
-        <input type="file" id="admin-file" accept="image/*" onchange="handleHeroPhoto(this)">
-        <button onclick="clearHeroPhoto()" style="margin-top:6px;width:100%;padding:7px;border:1px solid var(--g200);background:none;border-radius:var(--rsm);font-size:12px;color:var(--g600);cursor:pointer;">Quitar foto</button>
+        <div style="background:#fffbe6;border:1px solid #f0d060;border-radius:var(--rsm);padding:10px 12px;font-size:11px;color:#7a5c00;margin-bottom:8px;line-height:1.5;">
+          ⚠️ Para que <strong>todos los visitantes</strong> vean la foto, pega una URL pública abajo y guárdala en el código (<code>HERO_BG_URL</code>). Si solo subes un archivo, solo tú lo verás.
+        </div>
+        <label class="admin-lbl" style="margin-top:4px;">URL pública de imagen (Google Drive, etc.)</label>
+        <input class="csv-inp" id="hero-url-input" type="url" placeholder="https://drive.google.com/... o cualquier URL pública">
+        <div class="admin-btns" style="margin-top:6px;">
+          <button class="adm-btn primary" onclick="applyHeroUrl()">Previsualizar</button>
+          <button class="adm-btn sec" onclick="clearHeroPhoto()">Quitar</button>
+        </div>
+        <div id="hero-url-hint" style="display:none;margin-top:8px;background:#f0f6ff;border:1px solid #c0d8f8;border-radius:var(--rsm);padding:10px 12px;font-size:11px;color:#1547a0;">
+          ✅ Para hacerlo permanente, copia esta línea en el <code>index.html</code> (línea <code>HERO_BG_URL</code>):<br>
+          <code id="hero-url-copy" style="display:block;margin-top:4px;word-break:break-all;background:#fff;padding:4px 6px;border-radius:4px;border:1px solid #c0d8f8;"></code>
+        </div>
+        <div style="margin-top:10px;border-top:1px solid var(--g200);padding-top:10px;">
+          <label class="admin-lbl">Solo previsualizar (solo en tu dispositivo)</label>
+          <label class="photo-zone" for="admin-file">
+            <div style="font-size:24px;">🖼️</div>
+            <p>Subir imagen local (solo tú la verás)</p>
+            <p id="hero-photo-name" style="color:var(--blue);font-size:11px;margin-top:4px;"></p>
+          </label>
+          <input type="file" id="admin-file" accept="image/*" onchange="handleHeroPhoto(this)">
+        </div>
       </div>
       <!-- CSV URL -->
       <div class="admin-row" style="margin-bottom:0">
@@ -428,9 +494,25 @@ body{font-family:var(--fB);background:var(--g50);color:var(--black);min-height:1
 // ═══════════════════════════════════════
 // CONFIG — hardcoded, no visible en UI
 // ═══════════════════════════════════════
-var CSV_URL   = '/api/csv';
-var WA_NUMBER = '573173546999';
-var STORE_NAME= 'MONKEYS Apple Store';
+var CSV_URL    = '/api/csv';
+var WA_NUMBER  = '573173546999';
+var STORE_NAME = 'MONKEYS Apple Store';
+
+// ── HERO (URL pública → visible para TODOS los visitantes) ──
+var HERO_BG_URL = ''; // Pega aquí una URL pública para que todos la vean
+
+// ── CONTACTO Y REDES ──
+var CONTACT = {
+  nombre:    'MONKEYS Store',
+  telefono:  '317 354 6999',
+  email:     '',
+  direccion: '',
+  instagram: '',
+  facebook:  '',
+  tiktok:    '',
+  youtube:   '',
+  whatsapp:  '573173546999'
+};
 
 // ═══════════════════════════════════════
 // ESTADO
@@ -479,26 +561,72 @@ setInterval(rotateUrgency,4000);
 // ═══════════════════════════════════════
 // VIEWERS — pseudo-random por producto
 // ═══════════════════════════════════════
-function getViewers(id){
-  var seed=(id*7+13)%17;
-  var base=[2,3,4,5,6,7,8,3,4,5,6,2,7,3,4,5,8];
-  return base[seed];
+// Viewer counts — se inicializan por producto y varían cada 15s
+var viewerMap={};
+function initViewers(){
+  products.forEach(function(p){
+    var seed=(p.id*7+13)%17;
+    var base=[2,3,4,5,6,7,8,3,4,5,6,2,7,3,4,5,8];
+    viewerMap[p.id]=base[seed];
+  });
 }
+function getViewers(id){ return viewerMap[id]||3; }
+function tickViewers(){
+  // Fluctúa ±1 para cada producto visible
+  products.forEach(function(p){
+    var cur=viewerMap[p.id]||3;
+    var delta=Math.random()<.5?1:-1;
+    viewerMap[p.id]=Math.max(1,Math.min(12,cur+delta));
+  });
+  // Actualizar DOM sin re-render completo
+  document.querySelectorAll('.card-viewers').forEach(function(el){
+    var card=el.closest('.card');
+    if(!card)return;
+    var btn=card.querySelector('.btn-add');
+    if(!btn)return;
+    var match=btn.getAttribute('onclick').match(/addCart\((\d+)\)/);
+    if(!match)return;
+    var id=parseInt(match[1]);
+    el.textContent='👁 '+getViewers(id)+' personas viendo';
+  });
+  // Actualizar modal si está abierto
+  var moSocial=document.querySelector('.mo-social');
+  if(moSocial){
+    var match=moSocial.getAttribute('data-id');
+    if(match) moSocial.innerHTML='<span class="dot"></span> '+getViewers(parseInt(match))+' personas están viendo este equipo ahora';
+  }
+}
+setInterval(tickViewers,15000);
 
 // ═══════════════════════════════════════
 // HERO PHOTO
 // ═══════════════════════════════════════
 function initHero(){
+  if(HERO_BG_URL){ applyHeroBg(HERO_BG_URL); return; }
   try{
     var ph=localStorage.getItem('mk_hero');
-    if(ph){ applyHeroBg(ph); document.getElementById('hero-photo-name').textContent='Foto activa'; }
+    if(ph){ applyHeroBg(ph); document.getElementById('hero-photo-name').textContent='(previsualización local)'; }
   }catch(e){}
 }
 function applyHeroBg(src){
+  var url=src;
+  // Convertir Google Drive /file/d/ID → lh3 thumbnail
+  var m=src.match(/\/d\/([a-zA-Z0-9_-]{15,})/);
+  if(!m) m=src.match(/[?&]id=([a-zA-Z0-9_-]{15,})/);
+  if(m) url='https://lh3.googleusercontent.com/d/'+m[1];
   var bg=document.getElementById('hero-bg');
-  bg.style.backgroundImage='url('+src+')';
+  bg.style.backgroundImage='url('+url+')';
   bg.style.opacity='1';
   document.getElementById('hero-overlay').style.display='block';
+}
+function applyHeroUrl(){
+  var v=document.getElementById('hero-url-input').value.trim();
+  if(!v){alert('Pega una URL válida.');return;}
+  try{localStorage.setItem('mk_hero',v);}catch(e){}
+  applyHeroBg(v);
+  var hint=document.getElementById('hero-url-hint');
+  hint.style.display='block';
+  document.getElementById('hero-url-copy').textContent="var HERO_BG_URL = '"+v+"';";
 }
 function handleHeroPhoto(input){
   var f=input.files&&input.files[0]; if(!f)return;
@@ -507,7 +635,7 @@ function handleHeroPhoto(input){
     var d=e.target.result;
     try{localStorage.setItem('mk_hero',d);}catch(e){}
     applyHeroBg(d);
-    document.getElementById('hero-photo-name').textContent=f.name;
+    document.getElementById('hero-photo-name').textContent=f.name+' (solo tu dispositivo)';
   };
   r.readAsDataURL(f);
 }
@@ -516,6 +644,8 @@ function clearHeroPhoto(){
   document.getElementById('hero-bg').style.opacity='0';
   document.getElementById('hero-overlay').style.display='none';
   document.getElementById('hero-photo-name').textContent='';
+  var hint=document.getElementById('hero-url-hint');
+  if(hint) hint.style.display='none';
 }
 
 // ═══════════════════════════════════════
@@ -612,6 +742,7 @@ function loadData(){
         var nm=sc(r,iP);
         return{id:i,nombre:nm,color:sc(r,iC),precio:parsePrecio(sc(r,iPr)),estado:sc(r,iE).toUpperCase(),grado:sc(r,iG),bta:parseBta(sc(r,iB)),ref:sc(r,iR),sim:sc(r,iS),foto:processFoto(sc(r,iF)),cat:getCat(nm),emoji:getEmoji(nm)};});
       document.getElementById('main').style.display='block';
+      initViewers();
       renderFilters();renderGrid();
     })
     .catch(function(e){
@@ -686,7 +817,7 @@ function openMo(id){
     '<div class="mo-img">'+imgHtml(p,'80px')+'</div>'
     +'<div class="mo-body"><div class="mo-cat">'+p.cat+'</div><div class="mo-title">'+p.nombre+'</div>'
     +'<div class="mo-price">'+fmt(pr)+'</div><div class="mo-price-note">'+pnote()+'</div>'
-    +'<div class="mo-social"><span class="dot"></span> '+viewers+' personas están viendo este equipo ahora</div>'
+    +'<div class="mo-social" data-id="'+p.id+'"><span class="dot"></span> '+viewers+' personas están viendo este equipo ahora</div>'
     +'<div class="specs">'
     +'<div class="srow"><span class="sk">Color</span><span>'+(p.color||'—')+'</span></div>'
     +'<div class="srow"><span class="sk">Grado</span><span class="badge '+badgeCls(p.grado)+'">'+p.grado+'</span></div>'
@@ -802,9 +933,38 @@ function sendWA(){
   closeChk();closeCart();cart=[];updateBadge();}
 
 // ═══════════════════════════════════════
-// INICIO
+// FOOTER
 // ═══════════════════════════════════════
+function renderFooter(){
+  var ft=document.getElementById('site-footer');
+  ft.style.display='block';
+  // Nombre
+  document.getElementById('footer-nombre').textContent=CONTACT.nombre||STORE_NAME;
+  // Copyright
+  document.getElementById('footer-copy').textContent='© '+new Date().getFullYear()+' '+(CONTACT.nombre||STORE_NAME)+'. Todos los derechos reservados.';
+  // Contacto
+  var items=[];
+  if(CONTACT.telefono) items.push('<a class="footer-contact-item" href="tel:'+CONTACT.telefono.replace(/\s/g,'')+'"><span class="fci">📞</span>'+CONTACT.telefono+'</a>');
+  if(CONTACT.email) items.push('<a class="footer-contact-item" href="mailto:'+CONTACT.email+'"><span class="fci">✉️</span>'+CONTACT.email+'</a>');
+  if(CONTACT.whatsapp) items.push('<a class="footer-contact-item" target="_blank" href="https://wa.me/'+CONTACT.whatsapp+'"><span class="fci">💬</span>WhatsApp</a>');
+  if(CONTACT.direccion) items.push('<div class="footer-contact-item"><span class="fci">📍</span>'+CONTACT.direccion+'</div>');
+  document.getElementById('footer-contact').innerHTML=items.join('');
+  // Redes sociales
+  var svgIG='<svg viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z"/></svg>';
+  var svgFB='<svg viewBox="0 0 24 24"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>';
+  var svgTT='<svg viewBox="0 0 24 24"><path d="M12.525.02c1.31-.02 2.61-.01 3.91-.02.08 1.53.63 3.09 1.75 4.17 1.12 1.11 2.7 1.62 4.24 1.79v4.03c-1.44-.05-2.89-.35-4.2-.97-.57-.26-1.1-.59-1.62-.93-.01 2.92.01 5.84-.02 8.75-.08 1.4-.54 2.79-1.35 3.94-1.31 1.92-3.58 3.17-5.91 3.21-1.43.08-2.86-.31-4.08-1.03-2.02-1.19-3.44-3.37-3.65-5.71-.02-.5-.03-1-.01-1.49.18-1.9 1.12-3.72 2.58-4.96 1.66-1.44 3.98-2.13 6.15-1.72.02 1.48-.04 2.96-.04 4.44-.99-.32-2.15-.23-3.02.37-.63.41-1.11 1.04-1.36 1.75-.21.51-.15 1.07-.14 1.61.24 1.64 1.82 3.02 3.5 2.87 1.12-.01 2.19-.66 2.77-1.61.19-.33.4-.67.41-1.06.1-1.79.06-3.57.07-5.36.01-4.03-.01-8.05.02-12.07z"/></svg>';
+  var svgYT='<svg viewBox="0 0 24 24"><path d="M23.495 6.205a3.007 3.007 0 00-2.088-2.088c-1.87-.501-9.396-.501-9.396-.501s-7.507-.01-9.396.501A3.007 3.007 0 00.527 6.205a31.247 31.247 0 00-.522 5.805 31.247 31.247 0 00.522 5.783 3.007 3.007 0 002.088 2.088c1.868.502 9.396.502 9.396.502s7.506 0 9.396-.502a3.007 3.007 0 002.088-2.088 31.247 31.247 0 00.5-5.783 31.247 31.247 0 00-.5-5.805zM9.609 15.601V8.408l6.264 3.602z"/></svg>';
+  var svgWA='<svg viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347zM12 0C5.373 0 0 5.373 0 12c0 2.625.846 5.059 2.284 7.034L.785 23.25l4.352-1.398A11.945 11.945 0 0012 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 21.818a9.836 9.836 0 01-5.028-1.381l-.361-.214-3.736 1.2 1.228-3.647-.236-.374A9.817 9.817 0 012.182 12C2.182 6.57 6.57 2.182 12 2.182c5.43 0 9.818 4.388 9.818 9.818 0 5.43-4.388 9.818-9.818 9.818z"/></svg>';
+  var socLinks=[];
+  if(CONTACT.whatsapp) socLinks.push('<a class="soc-btn" href="https://wa.me/'+CONTACT.whatsapp+'" target="_blank" title="WhatsApp">'+svgWA+'</a>');
+  if(CONTACT.instagram) socLinks.push('<a class="soc-btn" href="'+CONTACT.instagram+'" target="_blank" title="Instagram">'+svgIG+'</a>');
+  if(CONTACT.facebook) socLinks.push('<a class="soc-btn" href="'+CONTACT.facebook+'" target="_blank" title="Facebook">'+svgFB+'</a>');
+  if(CONTACT.tiktok) socLinks.push('<a class="soc-btn" href="'+CONTACT.tiktok+'" target="_blank" title="TikTok">'+svgTT+'</a>');
+  if(CONTACT.youtube) socLinks.push('<a class="soc-btn" href="'+CONTACT.youtube+'" target="_blank" title="YouTube">'+svgYT+'</a>');
+  document.getElementById('footer-social').innerHTML=socLinks.join('');
+}
 initHero();
+renderFooter();
 loadData();
 </script>
 </body>
