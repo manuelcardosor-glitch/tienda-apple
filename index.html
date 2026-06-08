@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Apple Store — Catálogo</title>
+<title>MONKEYS Apple Store — Catálogo</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;1,9..40,400&family=DM+Serif+Display:ital@0;1&display=swap" rel="stylesheet">
 <style>
@@ -12,7 +12,7 @@
   --black:#0a0a0a;--white:#fff;
   --g50:#f8f8f8;--g100:#f0f0f0;--g200:#e4e4e4;--g400:#9a9a9a;--g600:#5a5a5a;--g800:#2a2a2a;
   --blue:#0066cc;--blueDk:#004fa3;
-  --green:#1a8c4e;--amber:#c17d10;--red:#c0392b;
+  --red:#c0392b;--amber:#c17d10;--green:#1a8c4e;
   --wa:#25D366;--waDk:#1fbe5c;
   --rsm:8px;--rmd:14px;--rlg:20px;--rpill:100px;
   --shMd:0 4px 16px rgba(0,0,0,.10);
@@ -24,29 +24,51 @@
 html{scroll-behavior:smooth}
 body{font-family:var(--fB);background:var(--g50);color:var(--black);min-height:100vh;-webkit-font-smoothing:antialiased;}
 
+/* ── URGENCY BANNER ── */
+.urgency-bar{
+  background:linear-gradient(90deg,#0a0a0a 0%,#1a1a2e 50%,#0a0a0a 100%);
+  color:#fff;font-size:12px;font-weight:500;
+  padding:8px 16px;text-align:center;
+  display:flex;align-items:center;justify-content:center;gap:8px;
+  overflow:hidden;position:relative;
+}
+.urgency-bar .ub-text{transition:opacity .4s,transform .4s;}
+.urgency-bar .ub-text.out{opacity:0;transform:translateY(-10px);}
+
 /* ── NAV ── */
-.nav{position:sticky;top:0;z-index:100;background:rgba(255,255,255,.92);backdrop-filter:blur(20px);border-bottom:1px solid var(--g200);padding:0 24px;height:58px;display:flex;align-items:center;gap:14px;}
-.brand{font-family:var(--fD);font-size:22px;color:var(--black);white-space:nowrap;flex-shrink:0;text-decoration:none;}
-.brand b{color:var(--blue);}
+.nav{position:sticky;top:0;z-index:100;background:rgba(255,255,255,.95);backdrop-filter:blur(20px);border-bottom:1px solid var(--g200);padding:0 24px;height:58px;display:flex;align-items:center;gap:14px;}
+.brand{display:flex;align-items:center;gap:7px;flex-shrink:0;text-decoration:none;cursor:pointer;user-select:none;}
+.brand-apple{width:20px;height:20px;flex-shrink:0;}
+.brand-name{font-family:var(--fD);font-size:20px;color:var(--black);}
+.brand-name b{color:var(--blue);}
 .srch-wrap{flex:1;max-width:360px;position:relative;}
 .srch{width:100%;padding:8px 16px 8px 36px;border:1.5px solid var(--g200);border-radius:var(--rpill);font-size:14px;font-family:var(--fB);background:var(--g50);outline:none;transition:var(--tr);color:var(--black);}
 .srch:focus{border-color:var(--blue);background:var(--white);box-shadow:0 0 0 3px rgba(0,102,204,.1);}
 .srch-ico{position:absolute;left:11px;top:50%;transform:translateY(-50%);color:var(--g400);font-size:14px;pointer-events:none;}
 .cart-btn{display:flex;align-items:center;gap:8px;background:var(--black);color:var(--white);border:none;padding:9px 18px;border-radius:var(--rpill);font-size:13px;font-weight:500;font-family:var(--fB);cursor:pointer;transition:var(--tr);flex-shrink:0;white-space:nowrap;}
 .cart-btn:hover{background:var(--g800);}
-.cbadge{background:var(--blue);color:var(--white);border-radius:50%;width:18px;height:18px;font-size:10px;font-weight:600;display:inline-flex;align-items:center;justify-content:center;}
+.cbadge{background:var(--blue);color:var(--white);border-radius:50%;width:18px;height:18px;font-size:10px;font-weight:600;display:inline-flex;align-items:center;justify-content:center;transition:transform .2s;}
+.cbadge.pop{transform:scale(1.5);}
 
 /* ── LOADING BAR ── */
 #load-bar{height:3px;background:var(--blue);width:0%;transition:width .4s ease;position:fixed;top:0;left:0;z-index:999;opacity:0;}
 #load-bar.active{opacity:1;}
 
 /* ── HERO ── */
-.hero{background:var(--black);color:var(--white);padding:56px 24px;text-align:center;position:relative;overflow:hidden;}
-.hero::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse 80% 60% at 50% 0%,rgba(0,102,204,.22) 0%,transparent 70%);}
-.hero-tag{font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:rgba(255,255,255,.45);margin-bottom:12px;position:relative;}
-.hero h1{font-family:var(--fD);font-size:clamp(36px,6vw,66px);font-weight:400;letter-spacing:-.02em;line-height:1.08;margin-bottom:14px;position:relative;}
+.hero{
+  background:var(--black);color:var(--white);
+  padding:56px 24px;text-align:center;
+  position:relative;overflow:hidden;min-height:260px;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+}
+.hero-bg{position:absolute;inset:0;background-size:cover;background-position:center;opacity:0;transition:opacity .5s;}
+.hero-overlay{position:absolute;inset:0;background:rgba(0,0,0,.6);}
+.hero-content{position:relative;z-index:2;}
+.hero::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse 80% 60% at 50% 0%,rgba(0,102,204,.22) 0%,transparent 70%);z-index:1;}
+.hero-tag{font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:rgba(255,255,255,.45);margin-bottom:12px;}
+.hero h1{font-family:var(--fD);font-size:clamp(36px,6vw,66px);font-weight:400;letter-spacing:-.02em;line-height:1.08;margin-bottom:14px;}
 .hero h1 em{font-style:italic;color:rgba(255,255,255,.55);}
-.hero p{font-size:15px;color:rgba(255,255,255,.5);max-width:440px;margin:0 auto;position:relative;}
+.hero p{font-size:15px;color:rgba(255,255,255,.5);max-width:440px;margin:0 auto;}
 
 /* ── FILTERS ── */
 .filters{background:var(--white);border-bottom:1px solid var(--g200);padding:10px 24px;display:flex;gap:6px;flex-wrap:wrap;align-items:center;}
@@ -55,9 +77,11 @@ body{font-family:var(--fB);background:var(--g50);color:var(--black);min-height:1
 .fbtn:hover{border-color:var(--g400);}
 .fbtn.active{background:var(--black);color:var(--white);border-color:var(--black);}
 .divv{width:1px;height:18px;background:var(--g200);margin:0 4px;flex-shrink:0;}
+/* IVA indicator */
+.iva-badge{margin-left:auto;font-size:11px;font-weight:600;color:var(--blue);background:#e8f0fc;padding:3px 10px;border-radius:var(--rpill);}
 
 /* ── STATS ── */
-.stats{padding:8px 24px;display:flex;gap:20px;}
+.stats{padding:8px 24px;display:flex;gap:20px;align-items:center;}
 .stat{font-size:12px;color:var(--g600);}
 .stat strong{color:var(--black);font-weight:600;}
 
@@ -65,18 +89,26 @@ body{font-family:var(--fB);background:var(--g50);color:var(--black);min-height:1
 .grid{padding:16px 24px 60px;display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:16px;}
 
 /* ── CARD ── */
-.card{background:var(--white);border-radius:var(--rlg);border:1px solid var(--g200);cursor:pointer;transition:var(--tr);overflow:hidden;display:flex;flex-direction:column;}
+.card{background:var(--white);border-radius:var(--rlg);border:1px solid var(--g200);cursor:pointer;transition:var(--tr);overflow:hidden;display:flex;flex-direction:column;opacity:0;transform:translateY(12px);animation:fadeUp .4s forwards;}
+@keyframes fadeUp{to{opacity:1;transform:translateY(0)}}
 .card:hover{transform:translateY(-4px);box-shadow:var(--shMd);border-color:var(--g400);}
-.card-img{width:100%;aspect-ratio:1;background:#f5f5f5;display:flex;align-items:center;justify-content:center;overflow:hidden;border-bottom:1px solid var(--g100);max-height:220px;}
-.card-img img{width:100%;height:100%;object-fit:contain;padding:12px;transition:transform .2s;}
 .card:hover .card-img img{transform:scale(1.05);}
+.card-img{width:100%;aspect-ratio:1;background:#f5f5f5;display:flex;align-items:center;justify-content:center;overflow:hidden;border-bottom:1px solid var(--g100);max-height:220px;position:relative;}
+.card-img img{width:100%;height:100%;object-fit:contain;padding:12px;transition:transform .25s;}
 .card-img .efb{font-size:58px;}
+/* card top badges */
+.card-top-badges{position:absolute;top:8px;left:8px;display:flex;flex-direction:column;gap:4px;z-index:2;}
+.badge-hot{background:linear-gradient(135deg,#ff4e50,#f9d423);color:#fff;font-size:9px;font-weight:700;padding:2px 7px;border-radius:4px;letter-spacing:.04em;}
+.badge-pop{background:var(--blue);color:#fff;font-size:9px;font-weight:700;padding:2px 7px;border-radius:4px;letter-spacing:.04em;}
 .card-body{padding:12px 12px 0;flex:1;}
 .card-cat{font-size:10px;text-transform:uppercase;letter-spacing:.08em;color:var(--g400);font-weight:500;}
 .card-name{font-size:14px;font-weight:500;line-height:1.35;margin:3px 0 2px;}
 .card-color{font-size:12px;color:var(--g600);}
+/* viewers */
+.card-viewers{font-size:10px;color:var(--amber);margin-top:3px;font-weight:500;}
 .card-foot{padding:10px 12px 12px;display:flex;align-items:center;justify-content:space-between;gap:6px;margin-top:auto;}
 .card-price{font-size:16px;font-weight:700;}
+.price-note{font-size:10px;color:var(--g400);display:block;margin-top:1px;}
 .card-meta{display:flex;flex-direction:column;align-items:flex-end;gap:4px;}
 .badge{display:inline-flex;padding:2px 8px;border-radius:5px;font-size:10px;font-weight:600;}
 .b-new{background:#dcf5eb;color:#0e6b35;}
@@ -89,20 +121,22 @@ body{font-family:var(--fB);background:var(--g50);color:var(--black);min-height:1
 .empty-state .ei{font-size:44px;margin-bottom:14px;}
 .empty-state h3{font-size:17px;font-weight:500;color:var(--g800);margin-bottom:6px;}
 
-/* ── ERROR BANNER ── */
-#err-banner{display:none;background:#fff0f0;border:1px solid #fcc;color:var(--red);padding:10px 24px;font-size:13px;text-align:center;}
-
 /* ── MODAL PRODUCTO ── */
 .mo{display:none;position:fixed;inset:0;z-index:200;background:rgba(0,0,0,.5);backdrop-filter:blur(4px);align-items:flex-start;justify-content:center;padding:20px;overflow-y:auto;}
 .mo.open{display:flex;}
-.mo-box{background:var(--white);border-radius:var(--rlg);max-width:490px;width:100%;margin:auto;box-shadow:var(--shLg);overflow:hidden;}
+.mo-box{background:var(--white);border-radius:var(--rlg);max-width:490px;width:100%;margin:auto;box-shadow:var(--shLg);overflow:hidden;animation:moIn .22s cubic-bezier(.34,1.4,.64,1);}
+@keyframes moIn{from{opacity:0;transform:scale(.94) translateY(12px)}to{opacity:1;transform:none}}
 .mo-img{width:100%;aspect-ratio:4/3;max-height:260px;background:#f5f5f5;display:flex;align-items:center;justify-content:center;overflow:hidden;border-bottom:1px solid var(--g200);}
 .mo-img img{width:100%;height:100%;object-fit:contain;padding:16px;}
 .mo-img .efb{font-size:80px;}
 .mo-body{padding:20px;}
 .mo-cat{font-size:10px;text-transform:uppercase;letter-spacing:.08em;color:var(--g400);margin-bottom:4px;}
 .mo-title{font-size:21px;font-weight:500;margin-bottom:4px;}
-.mo-price{font-size:27px;font-weight:700;margin:6px 0 14px;}
+.mo-price{font-size:27px;font-weight:700;margin:6px 0 4px;}
+.mo-price-note{font-size:11px;color:var(--g400);margin-bottom:8px;}
+.mo-social{display:flex;align-items:center;gap:6px;margin-bottom:14px;font-size:12px;color:var(--amber);font-weight:500;}
+.mo-social .dot{width:6px;height:6px;border-radius:50%;background:var(--amber);animation:pulse 1.4s ease-in-out infinite;}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.4}}
 .specs{background:var(--g50);border-radius:var(--rsm);overflow:hidden;margin-bottom:16px;}
 .srow{display:flex;justify-content:space-between;align-items:center;padding:8px 12px;border-bottom:1px solid var(--g100);font-size:13px;}
 .srow:last-child{border:none;}
@@ -110,31 +144,67 @@ body{font-family:var(--fB);background:var(--g50);color:var(--black);min-height:1
 .mo-acts{display:flex;gap:10px;}
 .btn-cls{background:var(--g100);color:var(--black);border:none;padding:11px 16px;border-radius:var(--rsm);font-size:14px;font-family:var(--fB);cursor:pointer;}
 .btn-cls:hover{background:var(--g200);}
-.btn-amo{flex:1;background:var(--blue);color:var(--white);border:none;padding:11px;border-radius:var(--rsm);font-size:15px;font-weight:500;font-family:var(--fB);cursor:pointer;}
+.btn-amo{flex:1;background:var(--blue);color:var(--white);border:none;padding:11px;border-radius:var(--rsm);font-size:15px;font-weight:500;font-family:var(--fB);cursor:pointer;transition:var(--tr);}
 .btn-amo:hover{background:var(--blueDk);}
+
+/* ── TOAST ── */
+.add-toast{
+  position:fixed;top:70px;right:20px;z-index:500;
+  background:rgba(10,10,10,.92);color:#fff;backdrop-filter:blur(10px);
+  padding:10px 16px;border-radius:var(--rmd);
+  font-size:13px;font-weight:500;
+  display:flex;align-items:center;gap:8px;
+  box-shadow:var(--shMd);
+  transform:translateX(calc(100% + 30px));
+  transition:transform .3s cubic-bezier(.34,1.4,.64,1);
+  pointer-events:none;
+}
+.add-toast.show{transform:translateX(0);}
 
 /* ── CART PANEL ── */
 .cart-ov{display:none;position:fixed;inset:0;z-index:300;}
 .cart-ov.open{display:block;}
 .cart-bg{position:absolute;inset:0;background:rgba(0,0,0,.4);}
-.cart-pnl{position:absolute;right:0;top:0;bottom:0;width:min(400px,100vw);background:var(--white);display:flex;flex-direction:column;box-shadow:var(--shLg);}
+.cart-pnl{
+  position:absolute;right:0;top:0;bottom:0;
+  width:min(420px,100vw);background:var(--white);
+  display:flex;flex-direction:column;box-shadow:var(--shLg);
+  transform:translateX(100%);
+  transition:transform .3s cubic-bezier(.4,0,.2,1);
+}
+.cart-ov.open .cart-pnl{transform:translateX(0);}
 .cart-hd{padding:18px 18px 14px;border-bottom:1px solid var(--g200);display:flex;justify-content:space-between;align-items:center;}
 .cart-hd h2{font-size:20px;font-weight:600;}
-.xbtn{background:var(--g100);border:none;width:30px;height:30px;border-radius:50%;cursor:pointer;font-size:16px;display:flex;align-items:center;justify-content:center;}
+.xbtn{background:var(--g100);border:none;width:30px;height:30px;border-radius:50%;cursor:pointer;font-size:16px;display:flex;align-items:center;justify-content:center;transition:var(--tr);}
 .xbtn:hover{background:var(--g200);}
-.cart-list{flex:1;overflow-y:auto;padding:14px 18px;}
+.cart-scroll{flex:1;overflow-y:auto;}
+.cart-list{padding:14px 18px 0;}
 .ci{display:flex;gap:10px;padding:11px 0;border-bottom:1px solid var(--g100);}
-.ci-img{width:46px;height:46px;background:var(--g50);border-radius:10px;display:flex;align-items:center;justify-content:center;flex-shrink:0;overflow:hidden;font-size:26px;}
+.ci:last-child{border:none;}
+.ci-img{width:46px;height:46px;background:var(--g50);border-radius:10px;display:flex;align-items:center;justify-content:center;flex-shrink:0;overflow:hidden;font-size:26px;border:1px solid var(--g100);}
 .ci-img img{width:100%;height:100%;object-fit:contain;padding:4px;}
 .ci-info{flex:1;min-width:0;}
 .ci-name{font-size:13px;font-weight:500;line-height:1.3;margin-bottom:2px;}
 .ci-sub{font-size:12px;color:var(--g600);}
 .ci-ctl{display:flex;align-items:center;gap:7px;margin-top:5px;}
-.qbtn{background:var(--g100);border:none;width:22px;height:22px;border-radius:50%;cursor:pointer;font-size:14px;display:flex;align-items:center;justify-content:center;}
+.qbtn{background:var(--g100);border:none;width:22px;height:22px;border-radius:50%;cursor:pointer;font-size:14px;display:flex;align-items:center;justify-content:center;transition:var(--tr);}
 .qbtn:hover{background:var(--g200);}
 .qn{font-size:13px;font-weight:600;min-width:18px;text-align:center;}
 .ci-rm{background:none;border:none;color:var(--g400);font-size:16px;cursor:pointer;margin-left:auto;padding:0 4px;}
 .ci-rm:hover{color:var(--red);}
+/* similar in cart */
+.cart-similar{padding:14px 18px 0;border-top:1px solid var(--g200);}
+.cart-similar h4{font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.08em;color:var(--g600);margin-bottom:10px;}
+.sim-row{display:flex;gap:8px;overflow-x:auto;padding-bottom:8px;scrollbar-width:none;}
+.sim-row::-webkit-scrollbar{display:none;}
+.sim-card{flex-shrink:0;width:100px;background:var(--g50);border-radius:var(--rsm);overflow:hidden;cursor:pointer;border:1px solid var(--g200);transition:var(--tr);}
+.sim-card:hover{border-color:var(--blue);}
+.sim-img{width:100%;aspect-ratio:1;display:flex;align-items:center;justify-content:center;font-size:28px;background:var(--white);overflow:hidden;}
+.sim-img img{width:100%;height:100%;object-fit:contain;padding:6px;}
+.sim-info{padding:5px 7px 7px;}
+.sim-name{font-size:10px;font-weight:500;line-height:1.3;margin-bottom:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.sim-price{font-size:11px;font-weight:700;color:var(--black);}
+.sim-badge{display:inline-block;font-size:8px;font-weight:700;background:linear-gradient(135deg,#ff4e50,#f9d423);color:#fff;padding:1px 5px;border-radius:3px;margin-bottom:2px;}
 .cart-empty{text-align:center;padding:3rem;color:var(--g400);font-size:14px;}
 .cart-ft{padding:14px 18px;border-top:1px solid var(--g200);}
 .trow{display:flex;justify-content:space-between;font-size:13px;color:var(--g600);padding:3px 0;}
@@ -171,12 +241,42 @@ body{font-family:var(--fB);background:var(--g50);color:var(--black);min-height:1
 .btn-sw:hover{background:var(--waDk);}
 .btn-sw svg{width:17px;height:17px;fill:currentColor;}
 
+/* ── ADMIN PANEL ── */
+.admin-ov{display:none;position:fixed;inset:0;z-index:600;background:rgba(0,0,0,.55);align-items:center;justify-content:center;padding:20px;}
+.admin-ov.open{display:flex;}
+.admin-box{background:var(--white);border-radius:var(--rlg);max-width:380px;width:100%;box-shadow:var(--shLg);overflow:hidden;}
+.admin-hd{background:var(--black);color:#fff;padding:16px 20px;display:flex;justify-content:space-between;align-items:center;}
+.admin-hd h3{font-size:15px;font-weight:600;letter-spacing:.02em;}
+.admin-body{padding:20px;}
+.admin-row{margin-bottom:18px;}
+.admin-lbl{display:block;font-size:11px;font-weight:600;color:var(--g600);margin-bottom:6px;text-transform:uppercase;letter-spacing:.04em;}
+/* IVA toggle in admin */
+.iva-sw{display:flex;background:var(--g100);border-radius:var(--rpill);padding:3px;gap:2px;}
+.iva-sw button{flex:1;padding:6px 12px;border:none;background:none;border-radius:var(--rpill);font-size:12px;font-weight:600;font-family:var(--fB);cursor:pointer;transition:var(--tr);color:var(--g600);}
+.iva-sw button.on{background:var(--black);color:#fff;}
+/* CSV input */
+.csv-inp{width:100%;padding:9px 12px;border:1.5px solid var(--g200);border-radius:var(--rsm);font-size:12px;font-family:var(--fB);outline:none;color:var(--black);}
+.csv-inp:focus{border-color:var(--blue);}
+.admin-btns{display:flex;gap:8px;margin-top:6px;}
+.adm-btn{flex:1;padding:9px;border:none;border-radius:var(--rsm);font-size:12px;font-weight:600;font-family:var(--fB);cursor:pointer;transition:var(--tr);}
+.adm-btn.primary{background:var(--blue);color:#fff;}
+.adm-btn.primary:hover{background:var(--blueDk);}
+.adm-btn.sec{background:var(--g100);color:var(--black);}
+.adm-btn.sec:hover{background:var(--g200);}
+/* photo upload in admin */
+.photo-zone{border:2px dashed var(--g200);border-radius:var(--rsm);padding:16px;text-align:center;cursor:pointer;transition:var(--tr);}
+.photo-zone:hover{border-color:var(--blue);background:#f0f6ff;}
+.photo-zone p{font-size:12px;color:var(--g600);margin-top:4px;}
+#hero-file{display:none;}
+#admin-file{display:none;}
+
 /* ── RESPONSIVE ── */
 @media(max-width:600px){
   .nav{padding:0 14px;gap:8px;}
   .hero{padding:36px 16px;}
   .grid{padding:12px;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:10px;}
   .filters,.stats{padding-left:14px;padding-right:14px;}
+  .add-toast{top:62px;right:12px;}
 }
 </style>
 </head>
@@ -184,59 +284,53 @@ body{font-family:var(--fB);background:var(--g50);color:var(--black);min-height:1
 
 <div id="load-bar"></div>
 
+<!-- URGENCY BANNER -->
+<div class="urgency-bar">
+  <span id="ub-text" class="ub-text">⚡ Envíos a todo Colombia · Equipos revisados y garantizados</span>
+</div>
+
 <!-- NAV -->
 <nav class="nav">
-  <a class="brand" href="#">&#xf8ff;<b>.</b>store</a>
+  <a class="brand" id="brand-logo" title="MONKEYS Store">
+    <svg class="brand-apple" viewBox="0 0 814 1000" fill="currentColor">
+      <path d="M788.1 340.9c-5.8 4.5-108.2 62.2-108.2 190.5 0 148.4 130.3 200.9 134.2 202.2-.6 3.2-20.7 71.9-68.7 141.9-42.8 61.6-87.5 123.1-155.5 123.1s-85.5-39.5-164-39.5c-76 0-103.7 40.8-165.9 40.8s-105-57.8-155.5-127.4C46 405.8 29 295.2 29 187.5 29 88.6 87.3 35.3 143.8 35.3c68.7 0 112.5 45.5 157.2 45.5 42.8 0 93.9-47 162.3-47 27.6 0 164.2 2.6 245.3 115.3zm-175.8-46.8c-35.1 0-102.8-36.6-134.2-36.6-83.5 0-126.3 49.3-126.3 108.5 0 66.8 36.6 128.3 122.5 161.6 35.7 13.5 72.8 17.2 87.3 17.2 3.8 0 6.4-.6 6.4-.6"/>
+    </svg>
+    <span class="brand-name">MONKEYS<b>.</b>store</span>
+  </a>
   <div class="srch-wrap">
     <span class="srch-ico">🔍</span>
     <input class="srch" id="srch" placeholder="Buscar iPhone, iPad, MacBook..." oninput="handleSearch()">
   </div>
-  <button id="settings-btn" onclick="toggleUrlBar()" title="Cambiar fuente de datos"
-  style="background:var(--g100);color:var(--g800);border:none;width:36px;height:36px;border-radius:50%;font-size:16px;cursor:pointer;flex-shrink:0;display:flex;align-items:center;justify-content:center;">
-  ⚙️
-</button>
-<button class="cart-btn" onclick="openCart()">
+  <button class="cart-btn" id="cart-btn" onclick="openCart()">
     🛒 Carrito <span class="cbadge" id="cart-count">0</span>
   </button>
 </nav>
 
-<!-- ERROR BANNER -->
-<div id="err-banner"></div>
-
-<!-- URL BAR (colapsable) -->
-<div id="url-bar" style="background:var(--white);border-bottom:1px solid var(--g200);padding:10px 24px;display:none;align-items:center;gap:8px;flex-wrap:wrap;">
-  <input id="url-input" type="url"
-    style="flex:1;min-width:200px;padding:8px 12px;border:1.5px solid var(--g200);border-radius:var(--rsm);font-size:13px;font-family:var(--fB);outline:none;color:var(--black);"
-    placeholder="Pega el URL CSV de Google Sheets y presiona Enter"
-    onkeydown="if(event.key==='Enter')applyUrl()">
-  <button onclick="applyUrl()"
-    style="background:var(--blue);color:#fff;border:none;padding:8px 16px;border-radius:var(--rsm);font-size:13px;font-weight:500;font-family:var(--fB);cursor:pointer;">
-    Cargar
-  </button>
-  <button onclick="hideUrlBar()"
-    style="background:var(--g100);color:var(--g800);border:none;padding:8px 14px;border-radius:var(--rsm);font-size:13px;font-family:var(--fB);cursor:pointer;">
-    Cancelar
-  </button>
-</div>
-
 <!-- HERO -->
-<div class="hero">
-  <div class="hero-tag">Tecnología certificada</div>
-  <h1>MONKEYS el mejor<br><em>Apple</em> para ti.</h1>
-  <p>Todos nuestros equipos pasan revisión técnica completa. Garantía y calidad en cada compra.</p>
+<div class="hero" id="hero">
+  <div class="hero-bg" id="hero-bg"></div>
+  <div class="hero-overlay" id="hero-overlay" style="display:none"></div>
+  <div class="hero-content">
+    <div class="hero-tag">Tecnología certificada</div>
+    <h1>MONKEYS el mejor<br><em>Apple</em> para ti.</h1>
+    <p>Todos nuestros equipos pasan revisión técnica completa. Garantía y calidad en cada compra.</p>
+  </div>
 </div>
 
-<!-- CONTENIDO PRINCIPAL -->
+<!-- MAIN -->
 <div id="main" style="display:none">
   <div class="filters" id="filters"></div>
   <div class="stats" id="stats"></div>
   <div class="grid" id="grid"></div>
 </div>
 
-<!-- MODAL PRODUCTO -->
+<!-- PRODUCT MODAL -->
 <div class="mo" id="mo" onclick="if(event.target===this)closeMo()">
   <div class="mo-box"><div id="mo-inner"></div></div>
 </div>
+
+<!-- TOAST -->
+<div class="add-toast" id="add-toast">✅ <span id="toast-msg"></span></div>
 
 <!-- CART PANEL -->
 <div class="cart-ov" id="cart-ov">
@@ -246,10 +340,18 @@ body{font-family:var(--fB);background:var(--g50);color:var(--black);min-height:1
       <h2>Tu carrito</h2>
       <button class="xbtn" onclick="closeCart()">✕</button>
     </div>
-    <div class="cart-list" id="cart-list"></div>
+    <div class="cart-scroll">
+      <div class="cart-list" id="cart-list"></div>
+      <div id="cart-similar-section" style="display:none">
+        <div class="cart-similar">
+          <h4>También te puede interesar</h4>
+          <div class="sim-row" id="sim-row"></div>
+        </div>
+      </div>
+    </div>
     <div class="cart-ft" id="cart-ft" style="display:none">
       <div class="trow"><span>Subtotal</span><span id="ct-sub"></span></div>
-      <div class="trow"><span>IVA (19%)</span><span id="ct-iva"></span></div>
+      <div class="trow" id="iva-row"><span>IVA (19%)</span><span id="ct-iva"></span></div>
       <div class="trow fin"><span>Total</span><span id="ct-tot"></span></div>
       <button class="btn-wa" onclick="openChk()">
         <svg viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347zM12 0C5.373 0 0 5.373 0 12c0 2.625.846 5.059 2.284 7.034L.785 23.25l4.352-1.398A11.945 11.945 0 0012 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 21.818a9.836 9.836 0 01-5.028-1.381l-.361-.214-3.736 1.2 1.228-3.647-.236-.374A9.817 9.817 0 012.182 12C2.182 6.57 6.57 2.182 12 2.182c5.43 0 9.818 4.388 9.818 9.818 0 5.43-4.388 9.818-9.818 9.818z"/></svg>
@@ -268,21 +370,9 @@ body{font-family:var(--fB);background:var(--g50);color:var(--black);min-height:1
     </div>
     <div class="chk-form">
       <div id="chk-sum"></div>
-      <div class="fg">
-        <label class="flb" for="fn">Nombre completo *</label>
-        <input class="fi" id="fn" type="text" placeholder="Juan García Pérez" autocomplete="name">
-        <div class="ferr" id="en">Ingresa tu nombre completo.</div>
-      </div>
-      <div class="fg">
-        <label class="flb" for="fe">Correo electrónico *</label>
-        <input class="fi" id="fe" type="email" placeholder="correo@ejemplo.com" autocomplete="email">
-        <div class="ferr" id="ee">Ingresa un correo válido.</div>
-      </div>
-      <div class="fg">
-        <label class="flb" for="fp">Número de contacto *</label>
-        <input class="fi" id="fp" type="tel" placeholder="3001234567" autocomplete="tel">
-        <div class="ferr" id="ep">Ingresa tu número de contacto.</div>
-      </div>
+      <div class="fg"><label class="flb" for="fn">Nombre completo *</label><input class="fi" id="fn" type="text" placeholder="Juan García Pérez" autocomplete="name"><div class="ferr" id="en">Ingresa tu nombre completo.</div></div>
+      <div class="fg"><label class="flb" for="fe">Correo electrónico *</label><input class="fi" id="fe" type="email" placeholder="correo@ejemplo.com" autocomplete="email"><div class="ferr" id="ee">Ingresa un correo válido.</div></div>
+      <div class="fg"><label class="flb" for="fp">Número de contacto *</label><input class="fi" id="fp" type="tel" placeholder="3001234567" autocomplete="tel"><div class="ferr" id="ep">Ingresa tu número de contacto.</div></div>
       <div class="chk-acts">
         <button class="btn-cc" onclick="closeChk()">Cancelar</button>
         <button class="btn-sw" onclick="sendWA()">
@@ -294,266 +384,427 @@ body{font-family:var(--fB);background:var(--g50);color:var(--black);min-height:1
   </div>
 </div>
 
+<!-- ADMIN PANEL (triple-click en el logo) -->
+<div class="admin-ov" id="admin-ov" onclick="if(event.target===this)closeAdmin()">
+  <div class="admin-box">
+    <div class="admin-hd">
+      <h3>🔧 Panel Administrador</h3>
+      <button class="xbtn" style="background:rgba(255,255,255,.15);color:#fff;" onclick="closeAdmin()">✕</button>
+    </div>
+    <div class="admin-body">
+      <!-- IVA -->
+      <div class="admin-row">
+        <label class="admin-lbl">Mostrar precios</label>
+        <div class="iva-sw">
+          <button id="iva-btn-sin" class="on" onclick="setIVA(false)">Sin IVA</button>
+          <button id="iva-btn-con" onclick="setIVA(true)">Con IVA (19%)</button>
+        </div>
+      </div>
+      <!-- Foto Hero -->
+      <div class="admin-row">
+        <label class="admin-lbl">Foto de fondo del Hero</label>
+        <label class="photo-zone" for="admin-file">
+          <div style="font-size:28px;">🖼️</div>
+          <p>Clic para subir imagen de portada</p>
+          <p id="hero-photo-name" style="color:var(--blue);font-size:11px;margin-top:4px;"></p>
+        </label>
+        <input type="file" id="admin-file" accept="image/*" onchange="handleHeroPhoto(this)">
+        <button onclick="clearHeroPhoto()" style="margin-top:6px;width:100%;padding:7px;border:1px solid var(--g200);background:none;border-radius:var(--rsm);font-size:12px;color:var(--g600);cursor:pointer;">Quitar foto</button>
+      </div>
+      <!-- CSV URL -->
+      <div class="admin-row" style="margin-bottom:0">
+        <label class="admin-lbl">Fuente de datos (CSV)</label>
+        <input class="csv-inp" id="csv-input" type="url" placeholder="URL del Google Sheet publicado">
+        <div class="admin-btns">
+          <button class="adm-btn primary" onclick="applyCSV()">Cargar</button>
+          <button class="adm-btn sec" onclick="resetCSV()">Restablecer</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
 <script>
-// ════════════════════════════════════════════════
-// CONFIGURACIÓN
-// ════════════════════════════════════════════════
-var CSV_URL    = '/api/csv';
-var WA_NUMBER  = '573173546999'; // ← MONKEYS
-var STORE_NAME = 'MONKEYS Apple Store'; // ← MONKEYS
+// ═══════════════════════════════════════
+// CONFIG — hardcoded, no visible en UI
+// ═══════════════════════════════════════
+var CSV_URL   = '/api/csv';
+var WA_NUMBER = '573173546999';
+var STORE_NAME= 'MONKEYS Apple Store';
 
-// ════════════════════════════════════════════════
+// ═══════════════════════════════════════
 // ESTADO
-// ════════════════════════════════════════════════
+// ═══════════════════════════════════════
 var products=[], cart=[], catF='Todos', gradeF='Todos', searchQ='';
+var ivaOn=false, lastAdded=null;
 
-// ════════════════════════════════════════════════
+// ═══════════════════════════════════════
+// IVA
+// ═══════════════════════════════════════
+function setIVA(on){
+  ivaOn=on;
+  document.getElementById('iva-btn-sin').classList.toggle('on',!on);
+  document.getElementById('iva-btn-con').classList.toggle('on',on);
+  renderGrid();
+  if(cart.length) renderCart();
+  // Indicador en filtros
+  var badge=document.getElementById('iva-badge');
+  if(badge) badge.textContent=on?'Precios con IVA':'Precios sin IVA';
+}
+function dp(p){ return ivaOn?p*1.19:p; }
+function pnote(){ return ivaOn?'IVA incluido':'+IVA 19%'; }
+
+// ═══════════════════════════════════════
+// URGENCY BANNER ROTATOR
+// ═══════════════════════════════════════
+var ubMsgs=[
+  '⚡ Envíos a todo Colombia · Equipos revisados y garantizados',
+  '🔥 Últimas unidades disponibles — ¡No dejes pasar tu equipo!',
+  '✅ Todos los equipos con revisión técnica completa',
+  '🛡️ Garantía real en cada compra · Soporte post-venta',
+  '📦 Despacho inmediato · Pago contra entrega disponible'
+];
+var ubIdx=0;
+function rotateUrgency(){
+  var el=document.getElementById('ub-text');
+  el.classList.add('out');
+  setTimeout(function(){
+    ubIdx=(ubIdx+1)%ubMsgs.length;
+    el.textContent=ubMsgs[ubIdx];
+    el.classList.remove('out');
+  },400);
+}
+setInterval(rotateUrgency,4000);
+
+// ═══════════════════════════════════════
+// VIEWERS — pseudo-random por producto
+// ═══════════════════════════════════════
+function getViewers(id){
+  var seed=(id*7+13)%17;
+  var base=[2,3,4,5,6,7,8,3,4,5,6,2,7,3,4,5,8];
+  return base[seed];
+}
+
+// ═══════════════════════════════════════
+// HERO PHOTO
+// ═══════════════════════════════════════
+function initHero(){
+  try{
+    var ph=localStorage.getItem('mk_hero');
+    if(ph){ applyHeroBg(ph); document.getElementById('hero-photo-name').textContent='Foto activa'; }
+  }catch(e){}
+}
+function applyHeroBg(src){
+  var bg=document.getElementById('hero-bg');
+  bg.style.backgroundImage='url('+src+')';
+  bg.style.opacity='1';
+  document.getElementById('hero-overlay').style.display='block';
+}
+function handleHeroPhoto(input){
+  var f=input.files&&input.files[0]; if(!f)return;
+  var r=new FileReader();
+  r.onload=function(e){
+    var d=e.target.result;
+    try{localStorage.setItem('mk_hero',d);}catch(e){}
+    applyHeroBg(d);
+    document.getElementById('hero-photo-name').textContent=f.name;
+  };
+  r.readAsDataURL(f);
+}
+function clearHeroPhoto(){
+  try{localStorage.removeItem('mk_hero');}catch(e){}
+  document.getElementById('hero-bg').style.opacity='0';
+  document.getElementById('hero-overlay').style.display='none';
+  document.getElementById('hero-photo-name').textContent='';
+}
+
+// ═══════════════════════════════════════
+// ADMIN PANEL — triple click en logo
+// ═══════════════════════════════════════
+var brandClicks=0, brandTimer=null;
+document.getElementById('brand-logo').addEventListener('click',function(){
+  brandClicks++;
+  clearTimeout(brandTimer);
+  brandTimer=setTimeout(function(){brandClicks=0;},600);
+  if(brandClicks>=3){ brandClicks=0; openAdmin(); }
+});
+function openAdmin(){
+  var cur=CSV_URL;
+  if(cur!=='/api/csv') document.getElementById('csv-input').value=cur;
+  document.getElementById('admin-ov').classList.add('open');
+}
+function closeAdmin(){ document.getElementById('admin-ov').classList.remove('open'); }
+function applyCSV(){
+  var v=document.getElementById('csv-input').value.trim();
+  if(!v){alert('Pega un URL válido.');return;}
+  closeAdmin(); CSV_URL=v; loadData();
+}
+function resetCSV(){ document.getElementById('csv-input').value=''; CSV_URL='/api/csv'; loadData(); }
+
+// ═══════════════════════════════════════
 // UTILIDADES
-// ════════════════════════════════════════════════
+// ═══════════════════════════════════════
 var EMOJIS={'IPHONE':'📱','MACBOOK':'💻','MAC MINI':'🖥️','IMAC':'🖥️','IPAD':'🖥️',
   'APPLE WATCH':'⌚','AIRPODS':'🎧','AIRPOOS':'🎧','HOMEPOD':'🔊','PENCIL':'✏️',
   'SAMSUNG':'📱','GALAXY':'📱','OPPO':'📱','XIAOMI':'📱'};
-
-function getEmoji(n){
-  var u=n.toUpperCase();
-  for(var k in EMOJIS) if(u.includes(k)) return EMOJIS[k];
-  return '📦';
-}
-function getCat(n){
-  var u=n.toUpperCase();
-  if(u.includes('IPHONE')) return 'iPhone';
-  if(u.includes('MACBOOK')||u.includes('MAC MINI')||u.includes('IMAC')) return 'Mac';
-  if(u.includes('IPAD')) return 'iPad';
-  if(u.includes('APPLE WATCH')) return 'Watch';
-  if(u.includes('AIRPODS')||u.includes('AIRPOOS')) return 'AirPods';
-  if(u.includes('PENCIL')) return 'Accesorios';
-  if(u.includes('SAMSUNG')||u.includes('GALAXY')||u.includes('OPPO')||u.includes('XIAOMI')) return 'Android';
-  return 'Otros';
-}
-function fmt(n){ return '$'+Math.round(n).toLocaleString('es-CO'); }
+function getEmoji(n){var u=n.toUpperCase();for(var k in EMOJIS)if(u.includes(k))return EMOJIS[k];return'📦';}
+function getCat(n){var u=n.toUpperCase();
+  if(u.includes('IPHONE'))return'iPhone';
+  if(u.includes('MACBOOK')||u.includes('MAC MINI')||u.includes('IMAC'))return'Mac';
+  if(u.includes('IPAD'))return'iPad';
+  if(u.includes('APPLE WATCH'))return'Watch';
+  if(u.includes('AIRPODS')||u.includes('AIRPOOS'))return'AirPods';
+  if(u.includes('PENCIL'))return'Accesorios';
+  if(u.includes('SAMSUNG')||u.includes('GALAXY')||u.includes('OPPO')||u.includes('XIAOMI'))return'Android';
+  return'Otros';}
+function fmt(n){return'$'+Math.round(n).toLocaleString('es-CO');}
 function parsePrecio(raw){
-  if(!raw) return 0;
-  var s=String(raw).replace(/[^0-9.,]/g,'');
-  if(!s) return 0;
-  if(s.includes(',')){
-    s=s.replace(/\./g,'').replace(',','.');
-  } else {
-    var d=(s.match(/\./g)||[]).length;
-    if(d>1){ s=s.replace(/\./g,''); }
-    else if(d===1){ var p=s.split('.'); if(p[1]&&p[1].length===3) s=s.replace('.',''); }
-  }
-  return parseFloat(s)||0;
-}
-function parseBta(raw){
-  var n=parseFloat(raw)||0; if(n===0) return 0;
-  return n<=1 ? Math.round(n*100) : Math.round(n);
-}
+  if(!raw)return 0;var s=String(raw).replace(/[^0-9.,]/g,'');if(!s)return 0;
+  if(s.includes(',')){s=s.replace(/\./g,'').replace(',','.');}
+  else{var d=(s.match(/\./g)||[]).length;if(d>1){s=s.replace(/\./g,'');}else if(d===1){var p=s.split('.');if(p[1]&&p[1].length===3)s=s.replace('.','')};}
+  return parseFloat(s)||0;}
+function parseBta(raw){var n=parseFloat(raw)||0;if(!n)return 0;return n<=1?Math.round(n*100):Math.round(n);}
 function processFoto(raw){
-  if(!raw) return ''; raw=String(raw).trim(); if(!raw) return '';
+  if(!raw)return'';raw=String(raw).trim();if(!raw)return'';
   if(raw.startsWith('http://')||raw.startsWith('https://')){
     var m=raw.match(/\/d\/([a-zA-Z0-9_-]{15,})/);
-    if(!m) m=raw.match(/[?&]id=([a-zA-Z0-9_-]{15,})/);
-    if(m) return 'https://lh3.googleusercontent.com/d/'+m[1];
-    return raw;
-  }
-  return '';
-}
-function badgeCls(g){ var u=(g||'').toUpperCase(); if(u.includes('NUEVO')) return 'b-new'; if(u.startsWith('B')) return 'b-b'; return 'b-a'; }
-function badgeLbl(g){ var u=(g||'').toUpperCase(); if(u.includes('NUEVO')) return 'Nuevo'; if(u.startsWith('B')) return 'Grado B'; return 'Grado A'; }
-function imgHtml(p,modal){
-  var sz=modal?'80px':'58px';
-  var fallback='<span class="efb" style="font-size:'+sz+';">'+p.emoji+'</span>';
-  if(!p.foto) return fallback;
-  return '<img src="'+p.foto.replace(/"/g,'&quot;')+'" alt="" '
-    +'style="width:100%;height:100%;object-fit:contain;padding:'+(modal?'20px':'10px')+';" '
-    +'onerror="this.style.display=\'none\';var f=this.parentNode.querySelector(\'.efb\');if(f)f.style.display=\'flex\';">'
-    +'<span class="efb" style="font-size:'+sz+';display:none;">'+p.emoji+'</span>';
-}
+    if(!m)m=raw.match(/[?&]id=([a-zA-Z0-9_-]{15,})/);
+    if(m)return'https://lh3.googleusercontent.com/d/'+m[1];
+    return raw;}return'';}
+function badgeCls(g){var u=(g||'').toUpperCase();if(u.includes('NUEVO'))return'b-new';if(u.startsWith('B'))return'b-b';return'b-a';}
+function badgeLbl(g){var u=(g||'').toUpperCase();if(u.includes('NUEVO'))return'Nuevo';if(u.startsWith('B'))return'Grado B';return'Grado A';}
+function imgHtml(p,sz){
+  sz=sz||'58px';
+  if(!p.foto)return'<span class="efb" style="font-size:'+sz+';">'+p.emoji+'</span>';
+  return'<img src="'+p.foto.replace(/"/g,'&quot;')+'" alt="" style="width:100%;height:100%;object-fit:contain;padding:'+(sz==='80px'?'16px':'10px')+';" onerror="this.style.display=\'none\';var f=this.parentNode.querySelector(\'.efb\');if(f)f.style.display=\'flex\';"><span class="efb" style="font-size:'+sz+';display:none;">'+p.emoji+'</span>';}
 
-// ════════════════════════════════════════════════
-// LOADING UI
-// ════════════════════════════════════════════════
-function showLoad(){ var b=document.getElementById('load-bar'); b.style.width='60%'; b.classList.add('active'); }
-function hideLoad(){ var b=document.getElementById('load-bar'); b.style.width='100%'; setTimeout(function(){ b.classList.remove('active'); b.style.width='0%'; },400); }
-function showErr(msg){ var el=document.getElementById('err-banner'); el.textContent='⚠️ '+msg; el.style.display='block'; setTimeout(function(){ el.style.display='none'; },6000); }
+// ═══════════════════════════════════════
+// LOADING
+// ═══════════════════════════════════════
+function showLoad(){var b=document.getElementById('load-bar');b.style.width='60%';b.classList.add('active');}
+function hideLoad(){var b=document.getElementById('load-bar');b.style.width='100%';setTimeout(function(){b.classList.remove('active');b.style.width='0%';},400);}
 
-// ════════════════════════════════════════════════
+// ═══════════════════════════════════════
 // CSV PARSER
-// ════════════════════════════════════════════════
+// ═══════════════════════════════════════
 function parseCSV(text){
   var lines=text.replace(/\r\n/g,'\n').replace(/\r/g,'\n').trim().split('\n');
   return lines.map(function(line){
     var cols=[],cur='',inQ=false;
-    for(var i=0;i<line.length;i++){
-      var c=line[i];
-      if(c==='"'){ inQ=!inQ; }
-      else if(c===','&&!inQ){ cols.push(cur.trim()); cur=''; }
-      else cur+=c;
-    }
-    cols.push(cur.trim()); return cols;
-  });
-}
-function sc(row,idx){ if(idx<0||idx>=row.length||row[idx]==null) return ''; return String(row[idx]).trim(); }
+    for(var i=0;i<line.length;i++){var c=line[i];if(c==='"'){inQ=!inQ;}else if(c===','&&!inQ){cols.push(cur.trim());cur='';}else cur+=c;}
+    cols.push(cur.trim());return cols;});}
+function sc(row,idx){if(idx<0||idx>=row.length||row[idx]==null)return'';return String(row[idx]).trim();}
 
-// ════════════════════════════════════════════════
-// CARGA PRINCIPAL
-// ════════════════════════════════════════════════
+// ═══════════════════════════════════════
+// CARGA
+// ═══════════════════════════════════════
 function loadData(){
   showLoad();
   fetch(CSV_URL)
-    .then(function(res){ if(!res.ok) throw new Error('HTTP '+res.status+'. Verifica que la hoja esté publicada como CSV.'); return res.text(); })
+    .then(function(res){if(!res.ok)throw new Error('HTTP '+res.status);return res.text();})
     .then(function(text){
-      var rows=parseCSV(text);
-      if(rows.length<2) throw new Error('La hoja está vacía o no tiene datos.');
-      var hdrs=rows[0].map(function(h){ return (h!=null?String(h):'').toUpperCase().trim().replace(/\s+/g,'_'); });
-      function gi(){ for(var a=0;a<arguments.length;a++){ var n=arguments[a]; for(var i=0;i<hdrs.length;i++){ if(hdrs[i].includes(n)) return i; } } return -1; }
-      var iP=gi('PRODUCTO'),iC=gi('COLOR'),iPr=gi('PRECIO'),iEst=gi('ESTADO_INICIAL','ESTADO'),iG=gi('GRADO'),iBta=gi('BATERIA'),iRef=gi('REFERENCIA','REF'),iSim=gi('SIM'),iFoto=gi('URL_FOTO','URL_IMAGEN','URL_FOTO_PRINCIPAL','FOTO_PRINCIPAL','FOTO','IMAGE');
-      if(iP<0||iPr<0) throw new Error('No se encontraron columnas PRODUCTO y PRECIO en la hoja.');
-      products=rows.slice(1).filter(function(r){ return r&&r.length>0&&sc(r,iP)!==''; }).map(function(r,i){
-        var nombre=sc(r,iP);
-        return { id:i, nombre:nombre, color:sc(r,iC), precio:parsePrecio(sc(r,iPr)), estado:sc(r,iEst).toUpperCase(), grado:sc(r,iG), bta:parseBta(sc(r,iBta)), ref:sc(r,iRef), sim:sc(r,iSim), foto:processFoto(sc(r,iFoto)), cat:getCat(nombre), emoji:getEmoji(nombre) };
-      });
-      renderStore();
+      var rows=parseCSV(text);if(rows.length<2)throw new Error('Hoja vacía.');
+      var hdrs=rows[0].map(function(h){return(h?String(h):'').toUpperCase().trim().replace(/\s+/g,'_');});
+      function gi(){for(var a=0;a<arguments.length;a++){var n=arguments[a];for(var i=0;i<hdrs.length;i++)if(hdrs[i].includes(n))return i;}return -1;}
+      var iP=gi('PRODUCTO'),iC=gi('COLOR'),iPr=gi('PRECIO'),iE=gi('ESTADO_INICIAL','ESTADO'),iG=gi('GRADO'),iB=gi('BATERIA'),iR=gi('REFERENCIA','REF'),iS=gi('SIM'),iF=gi('URL_FOTO','URL_IMAGEN','URL_FOTO_PRINCIPAL','FOTO_PRINCIPAL','FOTO','IMAGE');
+      if(iP<0||iPr<0)throw new Error('Columnas PRODUCTO y PRECIO no encontradas.');
+      products=rows.slice(1).filter(function(r){return r&&r.length>0&&sc(r,iP)!=='';}).map(function(r,i){
+        var nm=sc(r,iP);
+        return{id:i,nombre:nm,color:sc(r,iC),precio:parsePrecio(sc(r,iPr)),estado:sc(r,iE).toUpperCase(),grado:sc(r,iG),bta:parseBta(sc(r,iB)),ref:sc(r,iR),sim:sc(r,iS),foto:processFoto(sc(r,iF)),cat:getCat(nm),emoji:getEmoji(nm)};});
+      document.getElementById('main').style.display='block';
+      renderFilters();renderGrid();
     })
-    .catch(function(e){ showErr(e.message||'Error cargando el catálogo.'); console.error('[tienda] Error:',e); })
-    .then(function(){ hideLoad(); });
-}
+    .catch(function(e){
+      console.error('[tienda]',e);
+      document.getElementById('main').style.display='block';
+      document.getElementById('filters').innerHTML='';
+      document.getElementById('stats').innerHTML='';
+      document.getElementById('grid').innerHTML='<div class="empty-state"><div class="ei">⚠️</div><h3>No se pudo cargar el catálogo</h3><p>'+(e.message||'Error de conexión')+'</p></div>';
+    })
+    .then(function(){hideLoad();});}
 
-// ════════════════════════════════════════════════
+// ═══════════════════════════════════════
 // RENDER
-// ════════════════════════════════════════════════
-function renderStore(){ document.getElementById('main').style.display='block'; renderFilters(); renderGrid(); }
+// ═══════════════════════════════════════
 function renderFilters(){
-  var avail=products.filter(function(p){ return p.estado!=='VENDIDO'&&p.estado!=='EN REPARACION'; });
-  var cats=['Todos']; avail.forEach(function(p){ if(cats.indexOf(p.cat)<0) cats.push(p.cat); });
+  var avail=products.filter(function(p){return p.estado!=='VENDIDO'&&p.estado!=='EN REPARACION';});
+  var cats=['Todos'];avail.forEach(function(p){if(cats.indexOf(p.cat)<0)cats.push(p.cat);});
   var grades=['Todos','NUEVO','A','B'];
   var h='<span class="flabel">Categoría:</span>';
-  cats.forEach(function(c){ h+='<button class="fbtn'+(c===catF?' active':'')+'" onclick="setCat(\''+c+'\')">'+c+'</button>'; });
+  cats.forEach(function(c){h+='<button class="fbtn'+(c===catF?' active':'')+'" onclick="setCat(\''+c+'\')">'+c+'</button>';});
   h+='<div class="divv"></div><span class="flabel">Grado:</span>';
-  grades.forEach(function(g){ var lbl=g==='Todos'?'Todos':g==='NUEVO'?'Nuevo':'Grado '+g; h+='<button class="fbtn'+(g===gradeF?' active':'')+'" onclick="setGrade(\''+g+'\')">'+lbl+'</button>'; });
-  document.getElementById('filters').innerHTML=h;
-}
-function setCat(c){ catF=c; renderFilters(); renderGrid(); }
-function setGrade(g){ gradeF=g; renderFilters(); renderGrid(); }
-function handleSearch(){ searchQ=document.getElementById('srch').value.toLowerCase(); renderGrid(); }
+  grades.forEach(function(g){var lbl=g==='Todos'?'Todos':g==='NUEVO'?'Nuevo':'Grado '+g;h+='<button class="fbtn'+(g===gradeF?' active':'')+'" onclick="setGrade(\''+g+'\')">'+lbl+'</button>';});
+  h+='<span class="iva-badge" id="iva-badge">'+(ivaOn?'Precios con IVA':'Precios sin IVA')+'</span>';
+  document.getElementById('filters').innerHTML=h;}
+function setCat(c){catF=c;renderFilters();renderGrid();}
+function setGrade(g){gradeF=g;renderFilters();renderGrid();}
+function handleSearch(){searchQ=document.getElementById('srch').value.toLowerCase();renderGrid();}
 function visible(){
   return products.filter(function(p){
-    if(p.estado==='VENDIDO'||p.estado==='EN REPARACION') return false;
-    if(catF!=='Todos'&&p.cat!==catF) return false;
-    if(gradeF!=='Todos'){ var g=p.grado.toUpperCase(); if(gradeF==='NUEVO'&&!g.includes('NUEVO')) return false; if(gradeF==='A'&&(g.includes('NUEVO')||!g.startsWith('A'))) return false; if(gradeF==='B'&&!g.startsWith('B')) return false; }
-    if(searchQ){ var q=searchQ; if(!p.nombre.toLowerCase().includes(q)&&!p.color.toLowerCase().includes(q)&&!p.ref.toLowerCase().includes(q)) return false; }
-    return true;
-  });
-}
+    if(p.estado==='VENDIDO'||p.estado==='EN REPARACION')return false;
+    if(catF!=='Todos'&&p.cat!==catF)return false;
+    if(gradeF!=='Todos'){var g=p.grado.toUpperCase();if(gradeF==='NUEVO'&&!g.includes('NUEVO'))return false;if(gradeF==='A'&&(g.includes('NUEVO')||!g.startsWith('A')))return false;if(gradeF==='B'&&!g.startsWith('B'))return false;}
+    if(searchQ&&!p.nombre.toLowerCase().includes(searchQ)&&!p.color.toLowerCase().includes(searchQ)&&!p.ref.toLowerCase().includes(searchQ))return false;
+    return true;});}
 function renderGrid(){
   var list=visible();
-  var ps=list.map(function(p){ return p.precio; }).filter(function(x){ return x>0; });
-  var statsEl=document.getElementById('stats');
-  if(ps.length){ statsEl.innerHTML='<div class="stat"><strong>'+list.length+'</strong> disponibles</div><div class="stat">Desde <strong>'+fmt(Math.min.apply(null,ps))+'</strong> hasta <strong>'+fmt(Math.max.apply(null,ps))+'</strong></div>'; }
-  else{ statsEl.innerHTML='<div class="stat"><strong>'+list.length+'</strong> disponibles</div>'; }
-  var grid=document.getElementById('grid');
-  if(!list.length){ grid.innerHTML='<div class="empty-state"><div class="ei">🔍</div><h3>Sin resultados</h3><p>Cambia los filtros o la búsqueda.</p></div>'; return; }
-  grid.innerHTML=list.map(function(p){
-    var bl=p.bta>0?p.bta+'% bat.':'';
-    return '<div class="card" onclick="openMo('+p.id+')">'
-      +'<div class="card-img">'+imgHtml(p,false)+'</div>'
-      +'<div class="card-body"><div class="card-cat">'+p.cat+'</div><div class="card-name">'+p.nombre+'</div><div class="card-color">'+(p.color||'—')+(p.sim?' · '+p.sim:'')+'</div></div>'
-      +'<div class="card-foot"><div class="card-price">'+fmt(p.precio)+'</div>'
-      +'<div class="card-meta"><span class="badge '+badgeCls(p.grado)+'">'+badgeLbl(p.grado)+'</span>'+(bl?'<span class="bta">'+bl+'</span>':'')
-      +'<button class="btn-add" onclick="event.stopPropagation();addCart('+p.id+')">+ Agregar</button></div></div></div>';
-  }).join('');
-}
+  var ps=list.map(function(p){return p.precio;}).filter(Boolean);
+  var sb=document.getElementById('stats');
+  if(ps.length){
+    var mn=dp(Math.min.apply(null,ps)),mx=dp(Math.max.apply(null,ps));
+    sb.innerHTML='<div class="stat"><strong>'+list.length+'</strong> disponibles</div><div class="stat">Desde <strong>'+fmt(mn)+'</strong> hasta <strong>'+fmt(mx)+'</strong></div>';
+  }else{sb.innerHTML='<div class="stat"><strong>'+list.length+'</strong> disponibles</div>';}
+  var g=document.getElementById('grid');
+  if(!list.length){g.innerHTML='<div class="empty-state"><div class="ei">🔍</div><h3>Sin resultados</h3><p>Cambia los filtros.</p></div>';return;}
+  g.innerHTML=list.map(function(p,idx){
+    var pr=dp(p.precio);
+    var isHot=p.grado.toUpperCase().startsWith('B');
+    var isPop=idx<4&&!isHot;
+    var viewers=getViewers(p.id);
+    var bTop=(isHot?'<span class="badge-hot">🔥 ÚLT. UNID.</span>':'')+(isPop?'<span class="badge-pop">⭐ POPULAR</span>':'');
+    return'<div class="card" style="animation-delay:'+(idx*28)+'ms" onclick="openMo('+p.id+')">'
+      +'<div class="card-img">'+(bTop?'<div class="card-top-badges">'+bTop+'</div>':'')+imgHtml(p,'58px')+'</div>'
+      +'<div class="card-body"><div class="card-cat">'+p.cat+'</div><div class="card-name">'+p.nombre+'</div>'
+      +'<div class="card-color">'+(p.color||'—')+(p.sim?' · '+p.sim:'')+'</div>'
+      +'<div class="card-viewers">👁 '+viewers+' personas viendo</div></div>'
+      +'<div class="card-foot">'
+      +'<div><div class="card-price">'+fmt(pr)+'</div><span class="price-note">'+pnote()+'</span></div>'
+      +'<div class="card-meta"><span class="badge '+badgeCls(p.grado)+'">'+badgeLbl(p.grado)+'</span>'
+      +(p.bta>0?'<span class="bta">🔋 '+p.bta+'%</span>':'')
+      +'<button class="btn-add" onclick="event.stopPropagation();addCart('+p.id+')">+ Agregar</button>'
+      +'</div></div></div>';
+  }).join('');}
 
-// ════════════════════════════════════════════════
+// ═══════════════════════════════════════
 // MODAL
-// ════════════════════════════════════════════════
+// ═══════════════════════════════════════
 function openMo(id){
-  var p=products.find(function(x){ return x.id===id; }); if(!p) return;
+  var p=products.find(function(x){return x.id===id;});if(!p)return;
+  var pr=dp(p.precio);
+  var viewers=getViewers(p.id);
   document.getElementById('mo-inner').innerHTML=
-    '<div class="mo-img">'+imgHtml(p,true)+'</div>'
-    +'<div class="mo-body"><div class="mo-cat">'+p.cat+'</div><div class="mo-title">'+p.nombre+'</div><div class="mo-price">'+fmt(p.precio)+'</div>'
-    +'<div class="specs"><div class="srow"><span class="sk">Color</span><span>'+(p.color||'—')+'</span></div>'
+    '<div class="mo-img">'+imgHtml(p,'80px')+'</div>'
+    +'<div class="mo-body"><div class="mo-cat">'+p.cat+'</div><div class="mo-title">'+p.nombre+'</div>'
+    +'<div class="mo-price">'+fmt(pr)+'</div><div class="mo-price-note">'+pnote()+'</div>'
+    +'<div class="mo-social"><span class="dot"></span> '+viewers+' personas están viendo este equipo ahora</div>'
+    +'<div class="specs">'
+    +'<div class="srow"><span class="sk">Color</span><span>'+(p.color||'—')+'</span></div>'
     +'<div class="srow"><span class="sk">Grado</span><span class="badge '+badgeCls(p.grado)+'">'+p.grado+'</span></div>'
     +(p.bta>0?'<div class="srow"><span class="sk">Batería</span><span>'+p.bta+'%</span></div>':'')
     +(p.sim?'<div class="srow"><span class="sk">SIM</span><span>'+p.sim+'</span></div>':'')
     +(p.ref?'<div class="srow"><span class="sk">Ref.</span><span>'+p.ref+'</span></div>':'')
-    +'</div><div class="mo-acts"><button class="btn-cls" onclick="closeMo()">Cerrar</button><button class="btn-amo" onclick="addCart('+p.id+');closeMo()">Agregar al carrito</button></div></div>';
-  document.getElementById('mo').classList.add('open');
-}
-function closeMo(){ document.getElementById('mo').classList.remove('open'); }
+    +'</div>'
+    +'<div class="mo-acts"><button class="btn-cls" onclick="closeMo()">Cerrar</button>'
+    +'<button class="btn-amo" onclick="addCart('+p.id+');closeMo()">Agregar al carrito</button></div></div>';
+  document.getElementById('mo').classList.add('open');}
+function closeMo(){document.getElementById('mo').classList.remove('open');}
 
-// ════════════════════════════════════════════════
+// ═══════════════════════════════════════
+// TOAST
+// ═══════════════════════════════════════
+var toastT=null;
+function showToast(nm){
+  var t=document.getElementById('add-toast');
+  document.getElementById('toast-msg').textContent=nm+' agregado';
+  t.classList.add('show');
+  if(toastT)clearTimeout(toastT);
+  toastT=setTimeout(function(){t.classList.remove('show');},2200);}
+
+// ═══════════════════════════════════════
 // CARRITO
-// ════════════════════════════════════════════════
+// ═══════════════════════════════════════
+function getSimilar(p,n){
+  if(!p)return[];
+  return products.filter(function(x){return x.id!==p.id&&x.cat===p.cat&&x.estado!=='VENDIDO'&&x.estado!=='EN REPARACION'&&x.precio>0;}).slice(0,n||5);}
 function addCart(id){
-  var p=products.find(function(x){ return x.id===id; }); if(!p) return;
-  var ex=cart.find(function(c){ return c.id===id; });
-  if(ex) ex.qty++; else cart.push(Object.assign({},p,{qty:1}));
-  updateBadge();
-  var btn=document.querySelector('.cart-btn'); btn.style.background='#25D366';
-  setTimeout(function(){ btn.style.background=''; },700);
-}
-function updateBadge(){ document.getElementById('cart-count').textContent=cart.reduce(function(s,i){ return s+i.qty; },0); }
-function openCart(){ document.getElementById('cart-ov').classList.add('open'); renderCart(); }
-function closeCart(){ document.getElementById('cart-ov').classList.remove('open'); }
+  var p=products.find(function(x){return x.id===id;});if(!p)return;
+  var ex=cart.find(function(c){return c.id===id;});
+  if(ex)ex.qty++;else cart.push(Object.assign({},p,{qty:1}));
+  lastAdded=p;updateBadge();
+  showToast(p.nombre.split(' ').slice(0,3).join(' '));
+  openCart();}
+function updateBadge(){
+  var n=cart.reduce(function(s,i){return s+i.qty;},0);
+  var b=document.getElementById('cart-count');b.textContent=n;
+  b.classList.add('pop');setTimeout(function(){b.classList.remove('pop');},300);}
+function openCart(){document.getElementById('cart-ov').classList.add('open');renderCart();}
+function closeCart(){document.getElementById('cart-ov').classList.remove('open');}
 function renderCart(){
-  var list=document.getElementById('cart-list'); var ft=document.getElementById('cart-ft');
-  if(!cart.length){ list.innerHTML='<div class="cart-empty">🛒<br><br>Tu carrito está vacío</div>'; ft.style.display='none'; return; }
-  list.innerHTML=cart.map(function(item){
-    var thumb=item.foto?'<img src="'+item.foto.replace(/"/g,'&quot;')+'" style="width:100%;height:100%;object-fit:contain;padding:4px;" onerror="this.style.display=\'none\'">':item.emoji;
-    return '<div class="ci"><div class="ci-img">'+thumb+'</div>'
-      +'<div class="ci-info"><div class="ci-name">'+item.nombre+'</div><div class="ci-sub">'+item.color+' · '+fmt(item.precio)+'</div>'
-      +'<div class="ci-ctl"><button class="qbtn" onclick="chgQty('+item.id+',-1)">−</button><span class="qn">'+item.qty+'</span><button class="qbtn" onclick="chgQty('+item.id+',1)">+</button></div></div>'
-      +'<button class="ci-rm" onclick="rmCart('+item.id+')">✕</button></div>';
+  var cl=document.getElementById('cart-list');
+  var ft=document.getElementById('cart-ft');
+  var ss=document.getElementById('cart-similar-section');
+  if(!cart.length){
+    cl.innerHTML='<div class="cart-empty">🛒<br><br>Tu carrito está vacío</div>';
+    ft.style.display='none';ss.style.display='none';return;}
+  cl.innerHTML=cart.map(function(it){
+    var pr=dp(it.precio);
+    var th=it.foto?'<img src="'+it.foto.replace(/"/g,'&quot;')+'" style="width:100%;height:100%;object-fit:contain;padding:4px;" onerror="this.style.display=\'none\'">':it.emoji;
+    return'<div class="ci"><div class="ci-img">'+th+'</div>'
+      +'<div class="ci-info"><div class="ci-name">'+it.nombre+'</div>'
+      +'<div class="ci-sub">'+(it.color||'')+' · '+fmt(pr*it.qty)+'</div>'
+      +'<div class="ci-ctl"><button class="qbtn" onclick="chgQty('+it.id+',-1)">−</button>'
+      +'<span class="qn">'+it.qty+'</span>'
+      +'<button class="qbtn" onclick="chgQty('+it.id+',1)">+</button></div></div>'
+      +'<button class="ci-rm" onclick="rmCart('+it.id+')">✕</button></div>';
   }).join('');
-  var sub=cart.reduce(function(s,i){ return s+i.precio*i.qty; },0);
+  var sub=cart.reduce(function(s,i){return s+i.precio*i.qty;},0);
+  var iva=sub*0.19;
+  var tot=ivaOn?sub*1.19:sub;
   document.getElementById('ct-sub').textContent=fmt(sub);
-  document.getElementById('ct-iva').textContent=fmt(sub*0.19);
-  document.getElementById('ct-tot').textContent=fmt(sub*1.19);
+  document.getElementById('ct-iva').textContent=fmt(iva);
+  document.getElementById('ct-tot').textContent=fmt(tot);
+  document.getElementById('iva-row').style.display=ivaOn?'flex':'none';
   ft.style.display='block';
-}
-function chgQty(id,d){ var idx=cart.findIndex(function(c){ return c.id===id; }); if(idx<0) return; cart[idx].qty+=d; if(cart[idx].qty<=0) cart.splice(idx,1); updateBadge(); renderCart(); }
-function rmCart(id){ cart=cart.filter(function(c){ return c.id!==id; }); updateBadge(); renderCart(); }
+  // Similares
+  var sims=getSimilar(lastAdded,5);
+  if(sims.length){
+    document.getElementById('sim-row').innerHTML=sims.map(function(p){
+      var pr=dp(p.precio);
+      var th=p.foto?'<img src="'+p.foto.replace(/"/g,'&quot;')+'" style="width:100%;height:100%;object-fit:contain;" onerror="this.style.display=\'none\'">':p.emoji;
+      var isHot=p.grado.toUpperCase().startsWith('B');
+      return'<div class="sim-card" onclick="closeCart();openMo('+p.id+')">'
+        +'<div class="sim-img">'+th+'</div>'
+        +'<div class="sim-info">'+(isHot?'<div class="sim-badge">PROMO</div>':'')
+        +'<div class="sim-name">'+p.nombre+'</div>'
+        +'<div class="sim-price">'+fmt(pr)+'</div></div></div>';
+    }).join('');
+    ss.style.display='block';
+  }else{ss.style.display='none';}}
+function chgQty(id,d){var i=cart.findIndex(function(c){return c.id===id;});if(i<0)return;cart[i].qty+=d;if(cart[i].qty<=0)cart.splice(i,1);updateBadge();renderCart();}
+function rmCart(id){cart=cart.filter(function(c){return c.id!==id;});updateBadge();renderCart();}
 
-// ════════════════════════════════════════════════
+// ═══════════════════════════════════════
 // CHECKOUT
-// ════════════════════════════════════════════════
+// ═══════════════════════════════════════
 function openChk(){
-  if(!cart.length) return;
-  var sub=cart.reduce(function(s,i){ return s+i.precio*i.qty; },0); var tot=sub*1.19;
-  var h=cart.map(function(i){ return '<div class="oi"><span>'+i.nombre+' ×'+i.qty+'</span><span>'+fmt(i.precio*i.qty)+'</span></div>'; }).join('');
-  document.getElementById('chk-sum').innerHTML='<div class="ord-sum"><div class="ord-ttl">Resumen</div>'+h+'<div class="otot"><span>Total con IVA</span><span>'+fmt(tot)+'</span></div></div>';
-  ['fn','fe','fp'].forEach(function(f){ document.getElementById(f).classList.remove('err'); document.getElementById('e'+f[1]).classList.remove('show'); });
-  document.getElementById('chk-ov').classList.add('open');
-}
-function closeChk(){ document.getElementById('chk-ov').classList.remove('open'); }
+  if(!cart.length)return;
+  var sub=cart.reduce(function(s,i){return s+i.precio*i.qty;},0);
+  var tot=ivaOn?sub*1.19:sub;
+  var h=cart.map(function(i){var pr=dp(i.precio);return'<div class="oi"><span>'+i.nombre+' ×'+i.qty+'</span><span>'+fmt(pr*i.qty)+'</span></div>';}).join('');
+  document.getElementById('chk-sum').innerHTML='<div class="ord-sum"><div class="ord-ttl">Resumen</div>'+h+'<div class="otot"><span>Total</span><span>'+fmt(tot)+'</span></div></div>';
+  ['fn','fe','fp'].forEach(function(f){document.getElementById(f).classList.remove('err');document.getElementById('e'+f[1]).classList.remove('show');});
+  document.getElementById('chk-ov').classList.add('open');}
+function closeChk(){document.getElementById('chk-ov').classList.remove('open');}
 function sendWA(){
-  var name=document.getElementById('fn').value.trim(), email=document.getElementById('fe').value.trim(), phone=document.getElementById('fp').value.trim();
+  var name=document.getElementById('fn').value.trim(),email=document.getElementById('fe').value.trim(),phone=document.getElementById('fp').value.trim();
   var ok=true;
-  function vld(id,eid,cond){ document.getElementById(id).classList.toggle('err',!cond); document.getElementById(eid).classList.toggle('show',!cond); if(!cond) ok=false; }
-  vld('fn','en',name.length>=3); vld('fe','ee',/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)); vld('fp','ep',phone.replace(/\D/g,'').length>=7);
-  if(!ok) return;
-  var sub=cart.reduce(function(s,i){ return s+i.precio*i.qty; },0); var iva=sub*0.19; var tot=sub+iva;
-  var lines=['🛍️ *Nuevo pedido — '+STORE_NAME+'*','','👤 *Datos del cliente*','• Nombre: '+name,'• Correo: '+email,'• Contacto: '+phone,'','📦 *Productos*'];
-  cart.forEach(function(i){ lines.push('• '+i.nombre+(i.color?' ('+i.color+')':'')+' ×'+i.qty+' — '+fmt(i.precio*i.qty)); });
-  lines.push('','💰 *Resumen*','• Subtotal: '+fmt(sub),'• IVA 19%: '+fmt(iva),'• *Total: '+fmt(tot)+'*','','_Enviado desde la tienda online_');
-  window.open('https://wa.me/'+WA_NUMBER+'?text='+encodeURIComponent(lines.join('\n')),'_blank');
-  closeChk(); closeCart(); cart=[]; updateBadge();
-}
+  function vld(id,eid,c){document.getElementById(id).classList.toggle('err',!c);document.getElementById(eid).classList.toggle('show',!c);if(!c)ok=false;}
+  vld('fn','en',name.length>=3);vld('fe','ee',/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email));vld('fp','ep',phone.replace(/\D/g,'').length>=7);
+  if(!ok)return;
+  var sub=cart.reduce(function(s,i){return s+i.precio*i.qty;},0);
+  var iva=sub*0.19;var tot=ivaOn?sub*1.19:sub;
+  var L=['🛍️ *Nuevo pedido — '+STORE_NAME+'*','','👤 *Cliente*','• '+name,'• '+email,'• '+phone,'','📦 *Productos*'];
+  cart.forEach(function(i){L.push('• '+i.nombre+(i.color?' ('+i.color+')':'')+' ×'+i.qty+' — '+fmt(i.precio*i.qty));});
+  L.push('','💰 *Resumen*','• Subtotal: '+fmt(sub));
+  if(ivaOn)L.push('• IVA 19%: '+fmt(iva));
+  L.push('• *Total: '+fmt(tot)+'*'+(ivaOn?' (IVA inc.)':' (sin IVA)'),'','_Enviado desde MONKEYS tienda online_');
+  window.open('https://wa.me/'+WA_NUMBER+'?text='+encodeURIComponent(L.join('\n')),'_blank');
+  closeChk();closeCart();cart=[];updateBadge();}
 
-// ════════════════════════════════════════════════
-// URL BAR
-// ════════════════════════════════════════════════
-function toggleUrlBar(){
-  var bar=document.getElementById('url-bar'); var showing=bar.style.display==='flex';
-  if(showing){ hideUrlBar(); } else { bar.style.display='flex'; document.getElementById('url-input').focus(); var cur=CSV_URL; if(cur!=='/api/csv') document.getElementById('url-input').value=cur; }
-}
-function hideUrlBar(){ var bar=document.getElementById('url-bar'); bar.style.display='none'; document.getElementById('url-input').value=''; }
-function applyUrl(){ var val=document.getElementById('url-input').value.trim(); if(!val){ alert('Pega un URL válido de Google Sheets.'); return; } hideUrlBar(); CSV_URL=val; loadData(); }
-
-// ════════════════════════════════════════════════
+// ═══════════════════════════════════════
 // INICIO
-// ════════════════════════════════════════════════
+// ═══════════════════════════════════════
+initHero();
 loadData();
 </script>
 </body>
