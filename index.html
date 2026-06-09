@@ -315,47 +315,23 @@ body{font-family:var(--fB);background:var(--g50);color:var(--black);min-height:1
 .cat-header .cat-count{
   font-size:12px;color:var(--g400);font-weight:500;
 }
-.cat-header .cat-scroll-hint{
-  margin-left:auto;font-size:11px;color:var(--g400);
-  display:flex;align-items:center;gap:3px;
-  white-space:nowrap;
-}
+.cat-header 
 .prod-group{margin-bottom:0;}
 
 .prod-group-grid{
-  display:flex;
-  flex-direction:row;
-  overflow-x:auto;
-  scroll-snap-type:x mandatory;
-  -webkit-overflow-scrolling:touch;
-  scrollbar-width:none;
+  display:grid;
+  grid-template-columns:repeat(auto-fill,minmax(200px,1fr));
   gap:0;
   border-bottom:1px solid var(--g200);
-  position:relative;
-}
-.prod-group-grid::-webkit-scrollbar{display:none;}
-.prod-group-grid::after{
-  content:'';
-  position:sticky;right:0;top:0;
-  min-width:32px;height:100%;
-  background:linear-gradient(to right,transparent,rgba(255,255,255,.9));
-  pointer-events:none;flex-shrink:0;
 }
 .prod-group-grid .card{
-  flex:0 0 auto;
-  width:clamp(160px,22vw,240px);
   border-radius:0;border:none;
   border-right:1px solid var(--g100);
-  border-bottom:none;
-  scroll-snap-align:start;
+  border-bottom:1px solid var(--g100);
   animation:none;opacity:1;transform:none;
 }
 .prod-group-grid .card:hover{
   border-color:var(--g400);z-index:2;
-}
-/* When only 1 card in group — full width row instead of tiny strip */
-.prod-group-grid.single .card{
-  width:100%;max-width:340px;
 }
 
 /* ── BACK-TO-ALL FLOATING PILL ── */
@@ -403,7 +379,7 @@ body{font-family:var(--fB);background:var(--g50);color:var(--black);min-height:1
   .mob-srch-btn{display:flex;}        /* mostrar botón de búsqueda */
   .hero{padding:36px 16px;}
   .grid{padding:0 0 90px;}
-  .prod-group-grid .card{width:clamp(145px,44vw,200px);}
+  .prod-group-grid{grid-template-columns:repeat(2,1fr);}
   .cat-header{padding:14px 12px 8px;}
   .cat-header h2{font-size:18px;}
 
@@ -936,7 +912,7 @@ function renderGrid(){
       +'<div class="cat-header">'
       +'<h2>'+cat+'</h2>'
       +'<span class="cat-count">'+items.length+' equipo'+(items.length!==1?'s':'')+'</span>'
-      +(items.length>3?'<span class="cat-scroll-hint">desliza →</span>':'')
+      +(items.length>3?'':'')
       +'</div>'
       +'<div class="prod-group-grid">';
     items.forEach(function(p){ html+=cardHtml(p); });
