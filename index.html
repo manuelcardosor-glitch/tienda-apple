@@ -303,7 +303,7 @@ body{font-family:var(--fB);background:var(--g50);color:var(--black);min-height:1
 .cat-section{margin-bottom:0;}
 .cat-header{
   padding:18px 24px 10px;
-  display:flex;align-items:baseline;gap:10px;
+  display:flex;align-items:center;gap:10px;
   background:var(--g50);
   border-top:1px solid var(--g200);
 }
@@ -315,28 +315,47 @@ body{font-family:var(--fB);background:var(--g50);color:var(--black);min-height:1
 .cat-header .cat-count{
   font-size:12px;color:var(--g400);font-weight:500;
 }
-.prod-group{margin-bottom:0;}
-.prod-group-label{
-  padding:8px 24px 4px;
-  font-size:11px;font-weight:600;text-transform:uppercase;
-  letter-spacing:.08em;color:var(--g600);
-  background:var(--g50);
-  border-bottom:1px solid var(--g100);
+.cat-header .cat-scroll-hint{
+  margin-left:auto;font-size:11px;color:var(--g400);
+  display:flex;align-items:center;gap:3px;
+  white-space:nowrap;
 }
+.prod-group{margin-bottom:0;}
+
 .prod-group-grid{
-  display:grid;
-  grid-template-columns:repeat(auto-fill,minmax(220px,1fr));
+  display:flex;
+  flex-direction:row;
+  overflow-x:auto;
+  scroll-snap-type:x mandatory;
+  -webkit-overflow-scrolling:touch;
+  scrollbar-width:none;
   gap:0;
   border-bottom:1px solid var(--g200);
+  position:relative;
+}
+.prod-group-grid::-webkit-scrollbar{display:none;}
+.prod-group-grid::after{
+  content:'';
+  position:sticky;right:0;top:0;
+  min-width:32px;height:100%;
+  background:linear-gradient(to right,transparent,rgba(255,255,255,.9));
+  pointer-events:none;flex-shrink:0;
 }
 .prod-group-grid .card{
+  flex:0 0 auto;
+  width:clamp(160px,22vw,240px);
   border-radius:0;border:none;
   border-right:1px solid var(--g100);
-  border-bottom:1px solid var(--g100);
+  border-bottom:none;
+  scroll-snap-align:start;
   animation:none;opacity:1;transform:none;
 }
 .prod-group-grid .card:hover{
   border-color:var(--g400);z-index:2;
+}
+/* When only 1 card in group — full width row instead of tiny strip */
+.prod-group-grid.single .card{
+  width:100%;max-width:340px;
 }
 
 /* ── BACK-TO-ALL FLOATING PILL ── */
@@ -383,11 +402,11 @@ body{font-family:var(--fB);background:var(--g50);color:var(--black);min-height:1
   .srch-wrap{display:none;}           /* ocultar barra en móvil */
   .mob-srch-btn{display:flex;}        /* mostrar botón de búsqueda */
   .hero{padding:36px 16px;}
-  .grid{padding:10px 10px 90px;grid-template-columns:repeat(2,1fr);gap:10px;}
-  .prod-group-grid{grid-template-columns:repeat(2,1fr);}
+  .grid{padding:0 0 90px;}
+  .prod-group-grid .card{width:clamp(145px,44vw,200px);}
   .cat-header{padding:14px 12px 8px;}
   .cat-header h2{font-size:18px;}
-  .prod-group-label{padding:6px 12px 4px;}
+
   .filters{padding:8px 12px;gap:4px;overflow-x:auto;flex-wrap:nowrap;top:83px;}
   .flabel{display:none;}
   .stats{padding:6px 12px;}
@@ -863,12 +882,11 @@ function baseName(nombre){
   return nombre.split(' ').slice(0,3).join(' ');
 }
 // ── Helper: render single card HTML ──
-function cardHtml(p,globalIdx){
+function cardHtml(p){
   var pr=dp(p.precio);
   var isHot=p.grado.toUpperCase().startsWith('B');
-  var isPop=globalIdx<4&&!isHot;
   var viewers=getViewers(p.id);
-  var bTop=(isHot?'<span class="badge-hot">🔥 ÚLT. UNID.</span>':'')+(isPop?'<span class="badge-pop">⭐ POPULAR</span>':'');
+  var bTop=isHot?'<span class="badge-hot">🔥 ÚLT. UNID.</span>':'';
   return '<div class="card" onclick="openMo('+p.id+')">'
     +'<div class="card-img">'+(bTop?'<div class="card-top-badges">'+bTop+'</div>':'')+imgHtml(p,'58px')+'</div>'
     +'<div class="card-body"><div class="card-cat">'+p.cat+'</div><div class="card-name">'+p.nombre+'</div>'
@@ -897,39 +915,32 @@ function renderGrid(){
     return;
   }
 
-  // ── Group: category → base-product-name → items ──
+  // ── Group only by category, sort products by base name ──
   var catOrder=[];
   var catMap={};
   list.forEach(function(p){
-    if(!catMap[p.cat]){catMap[p.cat]={};catOrder.push(p.cat);}
-    var bn=baseName(p.nombre);
-    if(!catMap[p.cat][bn]) catMap[p.cat][bn]=[];
-    catMap[p.cat][bn].push(p);
+    if(!catMap[p.cat]){ catMap[p.cat]=[]; catOrder.push(p.cat); }
+    catMap[p.cat].push(p);
+  });
+  // Sort each category's products alphabetically by base name
+  catOrder.forEach(function(cat){
+    catMap[cat].sort(function(a,b){
+      return baseName(a.nombre).localeCompare(baseName(b.nombre),'es');
+    });
   });
 
   var html='';
-  var globalIdx=0;
   catOrder.forEach(function(cat){
-    var prodMap=catMap[cat];
-    var catTotal=0;
-    Object.keys(prodMap).forEach(function(bn){catTotal+=prodMap[bn].length;});
-    html+='<div class="cat-section">';
-    html+='<div class="cat-header">'
+    var items=catMap[cat];
+    html+='<div class="cat-section">'
+      +'<div class="cat-header">'
       +'<h2>'+cat+'</h2>'
-      +'<span class="cat-count">'+catTotal+' equipo'+(catTotal!==1?'s':'')+'</span>'
-      +'</div>';
-    // Sort product groups alphabetically
-    Object.keys(prodMap).sort().forEach(function(bn){
-      var items=prodMap[bn];
-      // Show sub-label when multiple variants share the same base name
-      if(items.length>1){
-        html+='<div class="prod-group-label">'+bn+'</div>';
-      }
-      html+='<div class="prod-group-grid">';
-      items.forEach(function(p){ html+=cardHtml(p,globalIdx++); });
-      html+='</div>';
-    });
-    html+='</div>';
+      +'<span class="cat-count">'+items.length+' equipo'+(items.length!==1?'s':'')+'</span>'
+      +(items.length>3?'<span class="cat-scroll-hint">desliza →</span>':'')
+      +'</div>'
+      +'<div class="prod-group-grid">';
+    items.forEach(function(p){ html+=cardHtml(p); });
+    html+='</div></div>';
   });
   g.innerHTML=html;
 }
