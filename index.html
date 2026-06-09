@@ -855,9 +855,12 @@ function renderFilters(){
   grades.forEach(function(g){var lbl=g==='Todos'?'Todos':g==='NUEVO'?'Nuevo':'Grado '+g;h+='<button class="fbtn'+(g===gradeF?' active':'')+'" onclick="setGrade(\''+g+'\')">'+lbl+'</button>';});
   h+='<span class="iva-badge" id="iva-badge">'+(ivaOn?'Precios con IVA':'Precios sin IVA')+'</span>';
   document.getElementById('filters').innerHTML=h;}
-function setCat(c){catF=c;renderFilters();renderGrid();checkBackPill();}
-function setGrade(g){gradeF=g;renderFilters();renderGrid();checkBackPill();}
-function handleSearch(){searchQ=document.getElementById('srch').value.toLowerCase();renderGrid();checkBackPill();}
+function scrollToGrid(){
+  document.getElementById('main').scrollIntoView({behavior:'smooth',block:'start'});
+}
+function setCat(c){catF=c;renderFilters();renderGrid();checkBackPill();scrollToGrid();}
+function setGrade(g){gradeF=g;renderFilters();renderGrid();checkBackPill();scrollToGrid();}
+function handleSearch(){searchQ=document.getElementById('srch').value.toLowerCase();renderGrid();checkBackPill();scrollToGrid();}
 function visible(){
   return products.filter(function(p){
     if(p.estado==='VENDIDO'||p.estado==='EN REPARACION')return false;
@@ -1071,13 +1074,12 @@ function closeMobSearch(){
 }
 function handleMobSearch(val){
   searchQ=val.toLowerCase();
-  // Mirror to desktop search input
   document.getElementById('srch').value=val;
   renderGrid();
   checkBackPill();
   if(!val) return;
   closeMobSearch();
-  document.getElementById('main').scrollIntoView({behavior:'smooth',block:'start'});
+  scrollToGrid();
 }
 function quickSearch(q){
   document.getElementById('mob-srch-input').value=q;
