@@ -107,10 +107,10 @@ body{font-family:var(--fB);background:var(--g50);color:var(--black);min-height:1
 .card-color{font-size:12px;color:var(--g600);}
 /* viewers */
 .card-viewers{font-size:10px;color:var(--amber);margin-top:3px;font-weight:500;}
-.card-foot{padding:10px 12px 12px;display:flex;align-items:center;justify-content:space-between;gap:6px;margin-top:auto;}
-.card-price{font-size:16px;font-weight:700;}
+.card-foot{padding:10px 12px 12px;display:flex;align-items:center;justify-content:space-between;gap:6px;margin-top:auto;flex-wrap:nowrap;}
+.card-price{font-size:16px;font-weight:700;white-space:nowrap;}
 .price-note{font-size:10px;color:var(--g400);display:block;margin-top:1px;}
-.card-meta{display:flex;flex-direction:column;align-items:flex-end;gap:4px;}
+.card-meta{display:flex;flex-direction:column;align-items:flex-end;gap:4px;flex-shrink:0;}
 .badge{display:inline-flex;padding:2px 8px;border-radius:5px;font-size:10px;font-weight:600;}
 .b-new{background:#dcf5eb;color:#0e6b35;}
 .b-a{background:#dbeafe;color:#1547a0;}
@@ -404,10 +404,10 @@ body{font-family:var(--fB);background:var(--g50);color:var(--black);min-height:1
   .footer-top{grid-template-columns:1fr;}
   .footer{padding:32px 16px 24px;}
   /* Bigger touch targets on cards */
-  .btn-add{padding:7px 14px;font-size:12px;}
-  .card-foot{padding:8px 10px 10px;}
+  .btn-add{padding:5px 10px;font-size:11px;white-space:nowrap;}
+  .card-foot{padding:8px 10px 10px;flex-wrap:nowrap;}
   .card-name{font-size:13px;}
-  .card-price{font-size:15px;}
+  .card-price{font-size:14px;}
 }
 </style>
 </head>
@@ -615,7 +615,7 @@ var WA_NUMBER  = '573173546999';
 var STORE_NAME = 'MONKEYS Apple Store';
 
 // ── HERO (URL pública → visible para TODOS los visitantes) ──
-var HERO_BG_URL = 'hero.jpg'; // Pega aquí una URL pública para que todos la vean
+var HERO_BG_URL = ''; // Pega aquí una URL pública para que todos la vean
 
 // ── CONTACTO Y REDES ──
 var CONTACT = {
@@ -873,11 +873,13 @@ function baseName(nombre){
   return nombre.split(' ').slice(0,3).join(' ');
 }
 // ── Helper: render single card HTML ──
-function cardHtml(p){
+function cardHtml(p,idx){
   var pr=dp(p.precio);
   var isHot=p.grado.toUpperCase().startsWith('B');
+  var isPop=!isHot&&idx<5;
   var viewers=getViewers(p.id);
-  var bTop=isHot?'<span class="badge-hot">🔥 ÚLT. UNID.</span>':'';
+  var bTop=(isHot?'<span class="badge-hot">🔥 ÚLT. UNID.</span>':'')
+          +(isPop?'<span class="badge-pop">⭐ POPULAR</span>':'');
   return '<div class="card" onclick="openMo('+p.id+')">'
     +'<div class="card-img">'+(bTop?'<div class="card-top-badges">'+bTop+'</div>':'')+imgHtml(p,'58px')+'</div>'
     +'<div class="card-body"><div class="card-cat">'+p.cat+'</div><div class="card-name">'+p.nombre+'</div>'
@@ -930,7 +932,7 @@ function renderGrid(){
       +(items.length>3?'':'')
       +'</div>'
       +'<div class="prod-group-grid">';
-    items.forEach(function(p){ html+=cardHtml(p); });
+    items.forEach(function(p){ html+=cardHtml(p,globalIdx++); });
     html+='</div></div>';
   });
   g.innerHTML=html;
@@ -1054,7 +1056,7 @@ function sendWA(){
   var sub=cart.reduce(function(s,i){return s+i.precio*i.qty;},0);
   var iva=sub*0.19;var tot=ivaOn?sub*1.19:sub;
   var L=['🛍️ *Nuevo pedido — '+STORE_NAME+'*','','👤 *Cliente*','• '+name,'• '+email,'• '+phone,'','📦 *Productos*'];
-  cart.forEach(function(i){L.push('• '+i.nombre+(i.color?' ('+i.color+')':'')+' ×'+i.qty+' — '+fmt(i.precio*i.qty));});
+  cart.forEach(function(i){L.push('• '+i.nombre+(i.color?' ('+i.color+')':'')+(i.ref?' [Ref: '+i.ref+']':'')+' ×'+i.qty+' — '+fmt(i.precio*i.qty));});
   L.push('','💰 *Resumen*','• Subtotal: '+fmt(sub));
   if(ivaOn)L.push('• IVA 19%: '+fmt(iva));
   L.push('• *Total: '+fmt(tot)+'*'+(ivaOn?' (IVA inc.)':' (sin IVA)'),'','_Enviado desde MONKEYS tienda online_');
