@@ -300,7 +300,7 @@ body{font-family:var(--fB);background:var(--g50);color:var(--black);min-height:1
 
 
 /* ── GROUPED GRID SECTIONS ── */
-.cat-section{margin-bottom:0;}
+.cat-section{margin-bottom:0;overflow:visible;}
 .cat-header{
   max-width:1400px;margin:0 auto;
   padding:18px 24px 10px;
@@ -322,19 +322,30 @@ body{font-family:var(--fB);background:var(--g50);color:var(--black);min-height:1
 .prod-group-grid{
   display:grid;
   grid-template-columns:repeat(5,1fr);
-  gap:0;
+  gap:14px;
+  padding:4px 24px 20px;
   border-bottom:1px solid var(--g200);
   max-width:1400px;
   margin:0 auto;
+  background:var(--g50);
 }
 .prod-group-grid .card{
-  border-radius:0;border:none;
-  border-right:1px solid var(--g100);
-  border-bottom:1px solid var(--g100);
-  animation:none;opacity:1;transform:none;
+  border-radius:18px;
+  border:1px solid var(--g200);
+  box-shadow:0 2px 10px rgba(0,0,0,.06);
+  animation:none;opacity:1;
+  transform:translateY(0) scale(1);
+  transition:transform .25s cubic-bezier(.34,1.4,.64,1),
+             box-shadow .25s ease,
+             border-color .2s ease;
+  overflow:hidden;
+  will-change:transform;
 }
 .prod-group-grid .card:hover{
-  border-color:var(--g400);z-index:2;
+  transform:translateY(-8px) scale(1.025);
+  box-shadow:0 20px 48px rgba(0,0,0,.14),0 6px 16px rgba(0,0,0,.08);
+  border-color:var(--blue);
+  z-index:2;
 }
 
 /* ── BACK-TO-ALL FLOATING PILL ── */
@@ -382,7 +393,7 @@ body{font-family:var(--fB);background:var(--g50);color:var(--black);min-height:1
   .mob-srch-btn{display:flex;}        /* mostrar botón de búsqueda */
   .hero{padding:36px 16px;}
   .grid{padding:0 0 90px;}
-  .prod-group-grid{grid-template-columns:repeat(2,1fr);max-width:100%;}
+  .prod-group-grid{grid-template-columns:repeat(2,1fr);max-width:100%;gap:10px;padding:4px 12px 16px;}
   .cat-header{padding:14px 12px 8px;}
   .cat-header h2{font-size:18px;}
 
