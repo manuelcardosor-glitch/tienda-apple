@@ -923,6 +923,7 @@ function renderGrid(){
   });
 
   var html='';
+  var globalIdx=0;
   catOrder.forEach(function(cat){
     var items=catMap[cat];
     html+='<div class="cat-section">'
